@@ -1,6 +1,6 @@
 # VehicleAccident
 
-This application to analyze a motor vehicle collisions (crashes) per cities
+This application to analyze a motor vehicle collisions (crashes) per cities.
 
 ## Getting Started
 
@@ -33,8 +33,8 @@ Version history:
 
 ## Authors
 
-Bykov Sergey - (e_mail: )
+Bykov Sergey - (e_mail: mr.tuniguk@gmail.com)
 Dovger Ivan - (e_mail: 1ivan.dovger@mail.ru)
 Kirychenko Andrey - (e_mail: akvaby@gmail.com)
 Orlovskaya Anastasia - (e_mail: nastassia.orlovskaya@gmail.com)
-Skiba Alexandra - (e_mail: )
+Skiba Alexandra - (e_mail: debrikosar@gmail.com)
