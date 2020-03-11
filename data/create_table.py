@@ -35,7 +35,7 @@ def create_table_borough(connect):
        (id SERIAL PRIMARY KEY,
        city integer NOT NULL REFERENCES cities (id) ON DELETE CASCADE ON UPDATE CASCADE,
        borough varchar NOT NULL,
-       geom geometry(MultiPolygon) UNIQUE NOT NULL);''')
+       geom GEOGRAPHY(MultiPolygon) UNIQUE NOT NULL);''')
   print("Table borough created successfully")
   connect.commit()
 
@@ -53,7 +53,7 @@ def create_table_accidents(connect):
        crash_time time NOT NULL,
        city integer NOT NULL REFERENCES cities (id) ON DELETE CASCADE ON UPDATE CASCADE,
        borough integer NOT NULL REFERENCES borough (id) ON DELETE CASCADE ON UPDATE CASCADE,
-       location geometry(Point) NOT NULL,
+       location GEOGRAPHY(Point) NOT NULL,
        weather type_of_weather,
        total_injury smallint,
        total_killed smallint);''')
