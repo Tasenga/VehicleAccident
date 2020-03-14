@@ -134,3 +134,6 @@ dmypy.json
 
 #third_party
 third_party/
+
+#configuration
+config.ini

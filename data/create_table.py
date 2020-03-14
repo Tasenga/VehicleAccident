@@ -1,18 +1,23 @@
 import psycopg2
 from postgis.psycopg import register
 from postgis import MultiPolygon, Point
+import configparser
+from pathlib import Path
+from os.path import dirname, abspath
 
 
 def connect_postgresql():
-  con = psycopg2.connect(
-    database="vehicleaccidents",
-    user="master",
-    password="adminvehicleaccidents",
-    host="vehicleaccidents.ci1cdsczdohb.us-east-2.rds-preview.amazonaws.com",
-    port="5432"
-  )
-  print("Database opened successfully")
-  return con
+    config = configparser.ConfigParser()
+    config.read(Path(dirname(abspath(__file__)), "config.ini"))
+    con = psycopg2.connect(
+        database=config["PostgreSQL"]["database"],
+        user=config["PostgreSQL"]["user"],
+        password=config["PostgreSQL"]["password"],
+        host=config["PostgreSQL"]["host"],
+        port=config["PostgreSQL"]["port"]
+    )
+    print("Database opened successfully")
+    return con
 
 def create_extension_postgis(connect):
     cur = connect.cursor()
