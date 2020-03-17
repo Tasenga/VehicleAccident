@@ -132,8 +132,5 @@ dmypy.json
 #data
 *.csv
 
-#third_party
-third_party/
-
 #configuration
 config.ini
