@@ -1,0 +1,16 @@
+filebeat:
+  inputs:
+  - type: log
+    enabled: true
+    multiline:
+      pattern: '\d{1,2}:\d{1,2}:\d{1,2}\.\d{1,4}\s\[.*?\]'
+      negate: true
+      match: after
+      max_lines: 300
+    tags: ["bigdatalab", "bitools"]
+    fields: {project: "bitools"}
+    paths:
+      - '/tmp/bigdata/bitools/log/*.log'
+
+output.logstash:
+  hosts: 'logstash:5044'
