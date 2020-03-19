@@ -33,7 +33,7 @@ services:
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-      - ./logstash/postgresql-42.2.11.jar:/usr/share/logstash/logstash-core/lib/jars/postgresql-42.2.11.jar
+      - ./logstash/postgresql-42.2.11.jar:/usr/share/logstash/logstash-core/lib/jars/postgresql-42.2.11.jar:ro
     ports:
       - "5000:5000"
       - "5044:5044"
