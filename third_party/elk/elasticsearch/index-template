@@ -1,70 +1,17 @@
-POST _template/mysql_sales
+POST _template/NY_borough
 {
     "order" : 0,
     "version" : 1,
     "index_patterns" : [
-      "mysql_sales*"
+      "NY_borough*"
     ],
     "settings" : {
-      "index" : {
-        "number_of_shards" : "1",
-        "refresh_interval" : "5s"
-      }
+        "number_of_shards" : 1
     },
     "mappings" : {
-      "dynamic_templates" : [
-        {
-          "message_field" : {
-            "path_match" : "message",
-            "mapping" : {
-              "norms" : false,
-              "type" : "text"
-            },
-            "match_mapping_type" : "string"
-          }
-        },
-        {
-          "string_fields" : {
-            "mapping" : {
-              "norms" : false,
-              "type" : "text",
-              "fields" : {
-                "keyword" : {
-                  "ignore_above" : 256,
-                  "type" : "keyword"
-                }
-              }
-            },
-            "match_mapping_type" : "string",
-            "match" : "*"
-          }
+        "properties" : {
+            "borough": {"type": "keyword"},
+            "count": {"type": "integer"}
         }
-      ],
-      "properties" : {
-        "@timestamp" : {
-          "type" : "date"
-        },
-        "geoip" : {
-          "dynamic" : true,
-          "properties" : {
-            "ip" : {
-              "type" : "ip"
-            },
-            "latitude" : {
-              "type" : "half_float"
-            },
-            "location" : {
-              "type" : "geo_point"
-            },
-            "longitude" : {
-              "type" : "half_float"
-            }
-          }
-        },
-        "@version" : {
-          "type" : "keyword"
-        }
-      }
-    },
-    "aliases" : { }
-  }
+    }
+}
