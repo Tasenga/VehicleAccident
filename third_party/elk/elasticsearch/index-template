@@ -1,9 +1,9 @@
-POST _template/NY_borough
+POST _template/ny_borough
 {
     "order" : 0,
     "version" : 1,
     "index_patterns" : [
-      "NY_borough*"
+      "ny_borough*"
     ],
     "settings" : {
         "number_of_shards" : 1
