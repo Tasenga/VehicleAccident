@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import concat, to_timestamp, when, col
+from pyspark.sql.functions import concat, to_timestamp, when
 from pyspark.sql.types import IntegerType
 from pathlib import Path
 from os.path import dirname, abspath
@@ -48,14 +48,14 @@ def clear():
 
     final_sdf = final_sdf.withColumn(
         "total_killed",
-        when(col("total_killed").isNull(), 0).\
-            otherwise(col("total_killed")))
+        when(final_sdf("total_killed").isNull(), 0).\
+            otherwise(final_sdf("total_killed")))
     final_sdf = final_sdf.withColumn(
         "total_injured",
-        when(col("total_injured").isNull(), 0).\
-            otherwise(col("total_injured")))
+        when(final_sdf("total_injured").isNull(), 0).\
+            otherwise(final_sdf("total_injured")))
 
-    # final_sdf.groupby('borough').count().show()
+    final_sdf.groupby('borough').count().show()
     return final_sdf
 
 

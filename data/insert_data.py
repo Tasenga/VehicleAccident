@@ -56,12 +56,12 @@ if __name__ == '__main__':
     con = connect_postgresql()
 
     #clean table
-    cur = con.cursor()
-    cur.execute("DELETE FROM cities")
-    cur.execute("DELETE FROM boroughs")
-    cur.execute("DELETE FROM accidents")
-    con.commit()
-    print("del")
+    # cur = con.cursor()
+    # cur.execute("DELETE FROM cities")
+    # cur.execute("DELETE FROM boroughs")
+    # cur.execute("DELETE FROM accidents")
+    # con.commit()
+    # print("del")
 
     insert_into_cities(con, 'New York')
 
