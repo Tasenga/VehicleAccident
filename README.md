@@ -35,8 +35,8 @@ in terminal (for Linux) move to the project directory ./VehicleAccident/third_pa
 4. open Kibana in your internet browser via link http://localhost:5601.
 
 To create Region map of New York vehicle accidents per boroughs:
-5. create new index (write 'NY_borough' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
-6. create new Region map for index pattern 'NY_borough' (http://localhost:5601/app/kibana#/visualize?_g=()).
+5. create new index (write 'ny_borough' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
+6. create new Region map for index pattern 'ny_borough' (http://localhost:5601/app/kibana#/visualize?_g=()).
 7. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms and Field=borough, Options->Layer Settings=Borough NYC and Join field=NYC Borough.
 
 
