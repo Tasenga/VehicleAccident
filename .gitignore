@@ -109,6 +109,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+SPARK_HOME/
 
 # Spyder project settings
 .spyderproject
