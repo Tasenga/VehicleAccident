@@ -252,16 +252,14 @@ def prepare_data_about_NY(spark):
         spark,
         Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
     )
-    raw_data = raw_data.filter(raw_data["CRASH DATE"] > "12/10/2019")
-
     primary_processed_data = primary_processing(raw_data)
     print(f"{datetime.now()} - end primary processing")
-    print(primary_processed_data.count())
+
     print(f"{datetime.now()} - start adding boroughs")
     boroughs = spark_read_csv(spark, Path(cwd, "data_source", "nybb.csv"))
     data_with_boroughs = add_boroughs(spark, primary_processed_data, boroughs)
     print(f"{datetime.now()} - end adding boroughs")
-    print(data_with_boroughs.count())
+
     print(f"{datetime.now()} - start adding neighborhoods")
     neighborhoods = spark_read_csv(
         spark, Path(cwd, "data_source", "ny_neighborhoods.csv")
@@ -269,10 +267,8 @@ def prepare_data_about_NY(spark):
     data_with_boroughs_and_neighborhoods = add_neighborhoods(
         spark, data_with_boroughs, neighborhoods
     )
-    print(data_with_boroughs_and_neighborhoods.count())
     print(f"{datetime.now()} - end adding neighborhoods")
 
-    print(data_with_boroughs_and_neighborhoods.count())
     print(f"{datetime.now()} - start create csv")
     write_csv(
         Path(cwd, "resulting_data", "NY.csv"),
