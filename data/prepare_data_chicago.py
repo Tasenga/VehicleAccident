@@ -109,15 +109,7 @@ def prepare_data_about_chicago(spark):
 if __name__ == '__main__':
     print(f"{datetime.now()} - start program")
     cwd = dirname(abspath(__file__))
-    spark = (
-        SparkSession.builder.master("local")
-        .appName("prepare_and_save_data")
-        .config(
-            "spark.jars",
-            Path(dirname(abspath(__file__)), "postgresql-42.2.11.jar"),
-        )
-        .getOrCreate()
-    )
+    spark = SparkSession.builder.getOrCreate()
     GeoSparkRegistrator.registerAll(spark)
     prepare_data_about_chicago(spark)
     print(f"{datetime.now()} - end program")

@@ -1,13 +1,15 @@
+from pathlib import Path
+from os.path import dirname, abspath
+
 import pandas as pd
 
 
-def parse_weather_csv(file):
+def prepare_weather_NY(df):
     """
     from all type of weather in file, create nex set of weather types
     Cloudy, Fog, Freezing Rain, Heavy Rain, Heavy Snow,Mostly Cloudy,
     Partly Cloudy,Rain,Snow,T-Storm,Thunder,Windy,Wintry
     """
-    df = pd.read_csv(file)
 
     df.replace(
         ['Heavy Snow / Windy', 'Heavy Snow with Thunder'],
@@ -105,4 +107,5 @@ def parse_weather_csv(file):
 
 
 if __name__ == '__main__':
-    parse_weather_csv('weather.csv')
+    cwd = dirname(abspath(__file__))
+    df = pd.read_csv(Path("resulting_data", 'weather.csv'))

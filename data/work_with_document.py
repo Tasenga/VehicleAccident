@@ -44,7 +44,7 @@ def write_json(filepath, mode, values):
         file.write("\n")
 
 
-def insert_to_db(path, values):
+def insert_to_db(values):
     environ[
         'PYSPARK_SUBMIT_ARGS'
     ] = f"--jars file:///{Path('postgresql-42.2.11.jar')} pyspark-shell"
@@ -61,7 +61,7 @@ def insert_to_db(path, values):
     values.write.jdbc(
         db_url,
         "accidents",
-        mode='overwrite',
+        mode="append",
         properties={
             "user": db_prop['user'],
             "password": db_prop['password'],

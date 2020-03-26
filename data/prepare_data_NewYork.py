@@ -4,7 +4,7 @@ from datetime import datetime
 
 from geospark.register import GeoSparkRegistrator
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import concat, to_timestamp, when, upper
+from pyspark.sql.functions import concat, to_timestamp, when
 from pyspark.sql.types import IntegerType
 
 from work_with_document import write_csv, spark_read_csv
@@ -208,9 +208,6 @@ def add_boroughs(spark, primary_processed_data, boroughs):
             data_mix_boroughs.borough_from_raw_data,
         ).otherwise(data_mix_boroughs.borough),
     )
-    data_with_boroughs = data_with_boroughs.withColumn(
-        "borough", upper(data_with_boroughs.borough)
-    )
     return data_with_boroughs
 
 
@@ -253,6 +250,7 @@ def prepare_data_about_NY(spark):
         Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
     )
     primary_processed_data = primary_processing(raw_data)
+
     print(f"{datetime.now()} - end primary processing")
 
     print(f"{datetime.now()} - start adding boroughs")
