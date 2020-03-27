@@ -4,14 +4,29 @@ from datetime import datetime
 
 from geospark.register import GeoSparkRegistrator
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import concat, to_timestamp, when
+from pyspark.sql.functions import (
+    concat,
+    to_timestamp,
+    when,
+    monotonically_increasing_id,
+    unix_timestamp,
+    abs,
+    min,
+)
 from pyspark.sql.types import IntegerType
 
-from work_with_document import write_csv, spark_read_csv
+from work_with_document import spark_read_csv
+
+# from work_with_document import write_csv
+# from prepare_weather_NY import prepare_weather_NY
 
 
 def primary_processing(raw_data):
-    tmp_sdf = raw_data.select(
+    deduplicated_raw_data = raw_data.dropDuplicates().withColumn(
+        "tmp_id", monotonically_increasing_id()
+    )
+    tmp_sdf = deduplicated_raw_data.select(
+        "tmp_id",
         "CRASH DATE",
         "CRASH TIME",
         "BOROUGH",
@@ -136,12 +151,16 @@ def primary_processing(raw_data):
         + df_injured.motorist_killed,
     )
     sdf_datetime = df_killed.withColumn(
-        "crash_datetime", concat("crash_date", "crash_time")
+        "crash_datetime",
+        to_timestamp(
+            concat("crash_date", "crash_time"), "MM/dd/yyyyHH:mm"
+        ).alias("crash_datetime"),
     )
     convert_datetime = sdf_datetime.select(
         to_timestamp(sdf_datetime.crash_datetime, "MM/dd/yyyyHH:mm").alias(
             "crash_datetime"
         ),
+        "tmp_id",
         "borough",
         "location",
         "person_injured",
@@ -156,7 +175,8 @@ def primary_processing(raw_data):
         "total_killed",
     )
     final_sdf = convert_datetime.filter(
-        convert_datetime.crash_datetime > "2016-01-01"
+        (convert_datetime.crash_datetime >= "2016-01-01")
+        & (convert_datetime.crash_datetime < "2020-01-01")
     )
     return final_sdf
 
@@ -174,6 +194,7 @@ def add_boroughs(spark, primary_processed_data, boroughs):
     accidents_geom = spark.sql(
         '''
         SELECT
+        tmp_id,
         crash_datetime, borough,
         st_geomFromWKT(location) as location,
         person_injured, person_killed,
@@ -186,10 +207,11 @@ def add_boroughs(spark, primary_processed_data, boroughs):
     )
     accidents_geom.createOrReplaceTempView("accidents")
     data_mix_boroughs = spark.sql(
-        '''
+        """
         SELECT
-        a.crash_datetime, a.borough as borough_from_raw_data,
-        a.location,
+        DISTINCT(a.tmp_id),
+        a.crash_datetime,
+        a.location, a.borough as borough_from_raw_data,
         a.person_injured, a.person_killed,
         a.pedestrian_injured, a.pedestrian_killed,
         a.cyclist_injured, a.cyclist_killed,
@@ -199,7 +221,7 @@ def add_boroughs(spark, primary_processed_data, boroughs):
         FROM accidents AS a
         LEFT OUTER JOIN boroughs AS b
         ON ST_Intersects(a.location, b.borough)
-        '''
+        """
     )
     data_with_boroughs = data_mix_boroughs.withColumn(
         "borough",
@@ -224,6 +246,7 @@ def add_neighborhoods(spark, data_with_boroughs, neighborhoods):
     data_with_boroughs_and_neighborhoods = spark.sql(
         """
         SELECT
+        DISTINCT(a.tmp_id),
         a.crash_datetime,
         'New York' as city, a.borough,
         n.neighborhood,
@@ -232,14 +255,95 @@ def add_neighborhoods(spark, data_with_boroughs, neighborhoods):
         a.pedestrian_injured, a.pedestrian_killed,
         a.cyclist_injured, a.cyclist_killed,
         a.motorist_injured, a.motorist_killed,
-        a.total_injured, a.total_killed,
-        a.borough_from_raw_data
+        a.total_injured, a.total_killed
         FROM accidents AS a
         LEFT OUTER JOIN neighborhoods AS n
         ON ST_Intersects(a.location, n.geo)
         """
     )
     return data_with_boroughs_and_neighborhoods
+
+
+def add_weather(data_with_boroughs_and_neighborhoods, weather):
+    weather = weather.withColumn(
+        "station",
+        when(weather.station == "KJFK", "BROOKLYN")
+        .when(weather.station == "KEWR", "STATEN ISLAND")
+        .when(weather.station == "KLGA", "BRONX, MANHATTAN")
+        .when(weather.station == "KISP", "QUEENS")
+        .otherwise("null"),
+    )
+    distances = data_with_boroughs_and_neighborhoods.join(
+        weather,
+        (
+            weather.station.contains(
+                data_with_boroughs_and_neighborhoods.borough
+            )
+        ),
+    ).withColumn(
+        'distance',
+        abs(
+            unix_timestamp(data_with_boroughs_and_neighborhoods.crash_datetime)
+            - unix_timestamp(weather.date_time)
+        ),
+    )
+    min_distances = distances.groupBy(
+        "tmp_id",
+        "crash_datetime",
+        "city",
+        "borough",
+        "neighborhood",
+        "location",
+        "person_injured",
+        "person_killed",
+        "pedestrian_injured",
+        "pedestrian_killed",
+        "cyclist_injured",
+        "cyclist_killed",
+        "motorist_injured",
+        "motorist_killed",
+        "total_injured",
+        "total_killed",
+    ).agg(min("distance").alias('distance'))
+
+    data_with_boroughs_and_neighborhoods_and_weather = distances.join(
+        min_distances,
+        [
+            "crash_datetime",
+            "city",
+            "borough",
+            "neighborhood",
+            "location",
+            "person_injured",
+            "person_killed",
+            "pedestrian_injured",
+            "pedestrian_killed",
+            "cyclist_injured",
+            "cyclist_killed",
+            "motorist_injured",
+            "motorist_killed",
+            "total_injured",
+            "total_killed",
+        ],
+    ).select(
+        "crash_datetime",
+        "city",
+        "borough",
+        "neighborhood",
+        "location",
+        "weather",
+        "person_injured",
+        "person_killed",
+        "pedestrian_injured",
+        "pedestrian_killed",
+        "cyclist_injured",
+        "cyclist_killed",
+        "motorist_injured",
+        "motorist_killed",
+        "total_injured",
+        "total_killed",
+    )
+    return data_with_boroughs_and_neighborhoods_and_weather
 
 
 def prepare_data_about_NY(spark):
@@ -250,7 +354,10 @@ def prepare_data_about_NY(spark):
         Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
     )
     primary_processed_data = primary_processing(raw_data)
-
+    primary_processed_data = primary_processed_data.filter(
+        primary_processed_data.crash_datetime > "2019-05-30"
+    )
+    print(primary_processed_data.count())
     print(f"{datetime.now()} - end primary processing")
 
     print(f"{datetime.now()} - start adding boroughs")
@@ -265,39 +372,52 @@ def prepare_data_about_NY(spark):
     data_with_boroughs_and_neighborhoods = add_neighborhoods(
         spark, data_with_boroughs, neighborhoods
     )
+    data_with_boroughs_and_neighborhoods.show(5)
     print(f"{datetime.now()} - end adding neighborhoods")
-
-    print(f"{datetime.now()} - start create csv")
-    write_csv(
-        Path(cwd, "resulting_data", "NY.csv"),
-        mode="w",
-        values=[
-            [
-                "crash_datetime",
-                "city",
-                "borough",
-                "neighborhood",
-                "location",
-                "person_injured",
-                "person_killed",
-                "pedestrian_injured",
-                "pedestrian_killed",
-                "cyclist_injured",
-                "cyclist_killed",
-                "motorist_injured",
-                "motorist_killed",
-                "total_injured",
-                "total_killed",
-                "borough_from_raw_data",
-            ]
-        ],
-    )
-    write_csv(
-        Path(cwd, "resulting_data", "NY.csv"),
-        mode="a",
-        values=data_with_boroughs_and_neighborhoods.collect(),
-    )
-    print(f"{datetime.now()} - end create csv")
+    print(data_with_boroughs_and_neighborhoods.count())
+    # print(f"{datetime.now()} - start adding weather")
+    # weather = prepare_weather_NY(
+    #     spark, spark_read_csv(
+    #         spark,
+    #         Path(cwd, "resulting_data", "weather.csv")
+    #     )
+    # )
+    # data_with_boroughs_and_neighborhoods_and_weather = add_weather(
+    #     data_with_boroughs_and_neighborhoods, weather
+    # )
+    # print(f"{datetime.now()} - end adding weather")
+    #
+    # print(f"{datetime.now()} - start create csv")
+    # write_csv(
+    #     Path(cwd, "resulting_data", "NY1.csv"),
+    #     mode="w",
+    #     values=[
+    #         [
+    #             "crash_datetime",
+    #             "city",
+    #             "borough",
+    #             "neighborhood",
+    #             "location",
+    #             "weather",
+    #             "person_injured",
+    #             "person_killed",
+    #             "pedestrian_injured",
+    #             "pedestrian_killed",
+    #             "cyclist_injured",
+    #             "cyclist_killed",
+    #             "motorist_injured",
+    #             "motorist_killed",
+    #             "total_injured",
+    #             "total_killed"
+    #         ]
+    #     ],
+    # )
+    # write_csv(
+    #     Path(cwd, "resulting_data", "NY1.csv"),
+    #     mode="a",
+    #     values=data_with_boroughs_and_neighborhoods_and_weather.collect(),
+    # )
+    # print(f"{datetime.now()} - end create csv")
 
 
 if __name__ == '__main__':
