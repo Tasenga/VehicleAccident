@@ -48,7 +48,9 @@ def primary_processing(raw_data):
         .withColumnRenamed(
             'NUMBER OF PEDESTRIANS INJURED', 'pedestrian_injured'
         )
-        .withColumnRenamed('NUMBER OF PEDESTRIANS KILLED', 'pedestrian_killed')
+        .withColumnRenamed(
+            'NUMBER OF PEDESTRIANS KILLED', 'pedestrian_killed'
+        )
         .withColumnRenamed('NUMBER OF CYCLIST INJURED', 'cyclist_injured')
         .withColumnRenamed('NUMBER OF CYCLIST KILLED', 'cyclist_killed')
         .withColumnRenamed('NUMBER OF MOTORIST INJURED', 'motorist_injured')
@@ -76,7 +78,8 @@ def primary_processing(raw_data):
             "cyclist_killed", tmp_sdf["cyclist_killed"].cast(IntegerType())
         )
         .withColumn(
-            "motorist_injured", tmp_sdf["motorist_injured"].cast(IntegerType())
+            "motorist_injured",
+            tmp_sdf["motorist_injured"].cast(IntegerType()),
         )
         .withColumn(
             "motorist_killed", tmp_sdf["motorist_killed"].cast(IntegerType())
@@ -275,49 +278,25 @@ def add_weather(data_with_boroughs_and_neighborhoods, weather):
     ).withColumn(
         'distance',
         abs(
-            unix_timestamp(data_with_boroughs_and_neighborhoods.crash_datetime)
+            unix_timestamp(
+                data_with_boroughs_and_neighborhoods.crash_datetime
+            )
             - unix_timestamp(weather.date_time)
         ),
     )
-    min_distances = distances.groupBy(
-        "tmp_id",
-        "crash_datetime",
-        "city",
-        "borough",
-        "neighborhood",
-        "location",
-        "person_injured",
-        "person_killed",
-        "pedestrian_injured",
-        "pedestrian_killed",
-        "cyclist_injured",
-        "cyclist_killed",
-        "motorist_injured",
-        "motorist_killed",
-        "total_injured",
-        "total_killed",
-    ).agg(min("distance").alias('distance'))
+    min_distances = (
+        distances.groupBy("tmp_id")
+        .agg(min("distance").alias("min_distances_distance"))
+        .withColumnRenamed("tmp_id", "min_distances_tmp_id")
+    )
 
-    data_with_boroughs_and_neighborhoods_and_weather = distances.join(
-        min_distances,
-        [
-            "crash_datetime",
-            "city",
-            "borough",
-            "neighborhood",
-            "location",
-            "person_injured",
-            "person_killed",
-            "pedestrian_injured",
-            "pedestrian_killed",
-            "cyclist_injured",
-            "cyclist_killed",
-            "motorist_injured",
-            "motorist_killed",
-            "total_injured",
-            "total_killed",
-        ],
+    data_with_boroughs_and_neighborhoods_and_weather = min_distances.join(
+        distances,
+        (min_distances.min_distances_distance == distances.tmp_id)
+        & (min_distances.min_distances_tmp_id == distances.distance),
+        how="leftouter",
     ).select(
+        "min_distances_tmp_id",
         "crash_datetime",
         "city",
         "borough",
@@ -363,7 +342,16 @@ def prepare_data_about_NY(spark):
     #     data_with_boroughs_and_neighborhoods.dropDuplicates(["tmp_id"])
 
     data_with_boroughs_and_neighborhoods = spark_read_csv(
-        spark, Path(cwd, "data_source", "NY.csv")
+        spark, Path(cwd, "resulting_data", "NY.csv")
+    )
+    # data_with_boroughs_and_neighborhoods = \
+    #     data_with_boroughs_and_neighborhoods.filter(
+    #     (data_with_boroughs_and_neighborhoods.crash_datetime > "2019-12-01")
+    #     & (data_with_boroughs_and_neighborhoods.crash_datetime
+    #     < "2020-01-01")
+    # )
+    print(
+        datetime.now(), "----", data_with_boroughs_and_neighborhoods.count()
     )
     weather = prepare_weather_NY(
         spark,
@@ -374,7 +362,7 @@ def prepare_data_about_NY(spark):
     )
 
     write_csv(
-        Path(cwd, "resulting_data", "NY1.csv"),
+        Path(cwd, "resulting_data", "NY_with_weather.csv"),
         mode="w",
         values=[
             [

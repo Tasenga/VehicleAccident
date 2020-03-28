@@ -53,15 +53,25 @@ def prepare_weather_NY(spark, raw_weather):
             ),
             (
                 [
+                    'Drizzle',
                     'Light Drizzle',
                     'Light Drizzle / Windy',
                     'Light Freezing Drizzle',
                     'Light Freezing Rain',
                     'Light Sleet',
                     'Light Sleet / Windy',
+                    'Light Snow / Freezing Rain',
                     'Sleet / Windy',
                     'Small Hail',
                     'Freezing Rain',
+                    'Snow / Freezing Rain',
+                    'Rain / Freezing Rain',
+                    'Rain / Freezing Rain / Windy',
+                    'Rain and Snow / Windy',
+                    'Rain and Snow',
+                    'Rain and Sleet / Windy',
+                    'Rain and Sleet',
+                    'Small Hail / Windy',
                 ],
                 'Freezing Rain',
             ),
@@ -71,7 +81,6 @@ def prepare_weather_NY(spark, raw_weather):
                     'Light Rain / Windy',
                     'Light Rain with Thunder',
                     'Rain / Windy',
-                    'Rain and Sleet',
                     'Rain',
                 ],
                 'Rain',
@@ -115,6 +124,7 @@ def prepare_weather_NY(spark, raw_weather):
             ),
             (['Unknown Precipitation', 'Fair'], 'Fair'),
             (['Wintry Mix / Windy', 'Wintry Mix', 'Mix', 'Wintry'], 'Wintry'),
+            (['Heavy Rain / Windy', 'Heavy Rain'], 'Heavy Rain'),
         ],
         ['variants', 'valid_type'],
     )
@@ -135,6 +145,10 @@ def prepare_weather_NY(spark, raw_weather):
         .drop(col("weather"))
         .withColumnRenamed("valid_type", "weather")
         .withColumn(
+            "weather",
+            when(col("weather").isNull(), "Fair").otherwise(col("weather")),
+        )
+        .withColumn(
             "station",
             when(col("station") == "KJFK", "Brooklyn")
             .when(col("station") == "KEWR", "Staten Island")
@@ -142,15 +156,16 @@ def prepare_weather_NY(spark, raw_weather):
             .when(col("station") == "KISP", "Queens"),
         )
     )
-
     return valid_weather_data
 
 
 if __name__ == '__main__':
     cwd = dirname(abspath(__file__))
     spark = SparkSession.builder.getOrCreate()
-    weather = spark_read_csv(spark, Path(cwd, "resulting_data", 'weather.csv'))
+    weather = spark_read_csv(
+        spark, Path(cwd, "resulting_data", 'weather.csv')
+    )
     print(weather.count())
     valid_weather_data = prepare_weather_NY(spark, weather)
     print(valid_weather_data.count())
-    valid_weather_data.show()
+    valid_weather_data.groupBy("weather").count().show()
