@@ -50,10 +50,10 @@ if __name__ == '__main__':
     )
     _LOGGER.info("start program")
     stations = ["KJFK", "KEWR", "KLGA", "KISP"]
-    firstday = parser.parse("2016-01-01")
-    lastday = parser.parse("2020-01-01")
+    firstday = parser.parse("2012-01-01")
+    lastday = parser.parse("2020-03-16")
     write_csv(
-        Path(cwd, "resulting_data", "weather1.csv"),
+        Path(cwd, "resulting_data", "weather.csv"),
         mode="w",
         values=get_weather_data(stations, firstday, lastday),
     )

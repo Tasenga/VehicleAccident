@@ -15,10 +15,8 @@ from pyspark.sql.functions import (
 )
 from pyspark.sql.types import IntegerType
 
-from work_with_document import spark_read_csv
-
-# from work_with_document import write_csv
-# from prepare_weather_NY import prepare_weather_NY
+from work_with_document import spark_read_csv, write_csv
+from prepare_weather_NY import prepare_weather_NY
 
 
 def primary_processing(raw_data):
@@ -134,7 +132,7 @@ def primary_processing(raw_data):
             ),
         )
     )
-    clean_sdf = tmp_sdf.filter(tmp_sdf['location'].isNotNull())
+    clean_sdf = tmp_sdf.filter(tmp_sdf['location'].contains("POINT"))
 
     df_injured = clean_sdf.withColumn(
         "total_injured",
@@ -174,10 +172,11 @@ def primary_processing(raw_data):
         "total_injured",
         "total_killed",
     )
-    final_sdf = convert_datetime.filter(
-        (convert_datetime.crash_datetime >= "2016-01-01")
-        & (convert_datetime.crash_datetime < "2020-01-01")
-    )
+    final_sdf = convert_datetime
+    # .filter(
+    # (convert_datetime.crash_datetime >= "2016-01-01")
+    #     & (convert_datetime.crash_datetime < "2020-01-01")
+    # )
     return final_sdf
 
 
@@ -209,7 +208,7 @@ def add_boroughs(spark, primary_processed_data, boroughs):
     data_mix_boroughs = spark.sql(
         """
         SELECT
-        DISTINCT(a.tmp_id),
+        a.tmp_id,
         a.crash_datetime,
         a.location, a.borough as borough_from_raw_data,
         a.person_injured, a.person_killed,
@@ -246,7 +245,7 @@ def add_neighborhoods(spark, data_with_boroughs, neighborhoods):
     data_with_boroughs_and_neighborhoods = spark.sql(
         """
         SELECT
-        DISTINCT(a.tmp_id),
+        a.tmp_id,
         a.crash_datetime,
         'New York' as city, a.borough,
         n.neighborhood,
@@ -265,14 +264,7 @@ def add_neighborhoods(spark, data_with_boroughs, neighborhoods):
 
 
 def add_weather(data_with_boroughs_and_neighborhoods, weather):
-    weather = weather.withColumn(
-        "station",
-        when(weather.station == "KJFK", "BROOKLYN")
-        .when(weather.station == "KEWR", "STATEN ISLAND")
-        .when(weather.station == "KLGA", "BRONX, MANHATTAN")
-        .when(weather.station == "KISP", "QUEENS")
-        .otherwise("null"),
-    )
+
     distances = data_with_boroughs_and_neighborhoods.join(
         weather,
         (
@@ -348,76 +340,69 @@ def add_weather(data_with_boroughs_and_neighborhoods, weather):
 
 def prepare_data_about_NY(spark):
     cwd = dirname(abspath(__file__))
-    print(f"{datetime.now()} - start primary processing")
-    raw_data = spark_read_csv(
-        spark,
-        Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
-    )
-    primary_processed_data = primary_processing(raw_data)
-    primary_processed_data = primary_processed_data.filter(
-        primary_processed_data.crash_datetime > "2019-05-30"
-    )
-    print(primary_processed_data.count())
-    print(f"{datetime.now()} - end primary processing")
-
-    print(f"{datetime.now()} - start adding boroughs")
-    boroughs = spark_read_csv(spark, Path(cwd, "data_source", "nybb.csv"))
-    data_with_boroughs = add_boroughs(spark, primary_processed_data, boroughs)
-    print(f"{datetime.now()} - end adding boroughs")
-
-    print(f"{datetime.now()} - start adding neighborhoods")
-    neighborhoods = spark_read_csv(
-        spark, Path(cwd, "data_source", "ny_neighborhoods.csv")
-    )
-    data_with_boroughs_and_neighborhoods = add_neighborhoods(
-        spark, data_with_boroughs, neighborhoods
-    )
-    data_with_boroughs_and_neighborhoods.show(5)
-    print(f"{datetime.now()} - end adding neighborhoods")
-    print(data_with_boroughs_and_neighborhoods.count())
-    # print(f"{datetime.now()} - start adding weather")
-    # weather = prepare_weather_NY(
-    #     spark, spark_read_csv(
-    #         spark,
-    #         Path(cwd, "resulting_data", "weather.csv")
-    #     )
+    # raw_data = spark_read_csv(
+    #     spark,
+    #     Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
     # )
-    # data_with_boroughs_and_neighborhoods_and_weather = add_weather(
-    #     data_with_boroughs_and_neighborhoods, weather
-    # )
-    # print(f"{datetime.now()} - end adding weather")
+    # primary_processed_data = primary_processing(raw_data)
     #
-    # print(f"{datetime.now()} - start create csv")
-    # write_csv(
-    #     Path(cwd, "resulting_data", "NY1.csv"),
-    #     mode="w",
-    #     values=[
-    #         [
-    #             "crash_datetime",
-    #             "city",
-    #             "borough",
-    #             "neighborhood",
-    #             "location",
-    #             "weather",
-    #             "person_injured",
-    #             "person_killed",
-    #             "pedestrian_injured",
-    #             "pedestrian_killed",
-    #             "cyclist_injured",
-    #             "cyclist_killed",
-    #             "motorist_injured",
-    #             "motorist_killed",
-    #             "total_injured",
-    #             "total_killed"
-    #         ]
-    #     ],
+    # boroughs = spark_read_csv(spark, Path(cwd, "data_source", "nybb.csv"))
+    # data_with_boroughs = add_boroughs(
+    #     spark,
+    #     primary_processed_data,
+    #     boroughs
     # )
-    # write_csv(
-    #     Path(cwd, "resulting_data", "NY1.csv"),
-    #     mode="a",
-    #     values=data_with_boroughs_and_neighborhoods_and_weather.collect(),
+    #
+    # neighborhoods = spark_read_csv(
+    #     spark, Path(cwd, "data_source", "ny_neighborhoods.csv")
     # )
-    # print(f"{datetime.now()} - end create csv")
+    # data_with_boroughs_and_neighborhoods = add_neighborhoods(
+    #     spark, data_with_boroughs, neighborhoods
+    # )
+    # data_with_boroughs_and_neighborhoods = \
+    #     data_with_boroughs_and_neighborhoods.dropDuplicates(["tmp_id"])
+
+    data_with_boroughs_and_neighborhoods = spark_read_csv(
+        spark, Path(cwd, "data_source", "NY.csv")
+    )
+    weather = prepare_weather_NY(
+        spark,
+        spark_read_csv(spark, Path(cwd, "resulting_data", "weather.csv")),
+    )
+    data_with_boroughs_and_neighborhoods_and_weather = add_weather(
+        data_with_boroughs_and_neighborhoods, weather
+    )
+
+    write_csv(
+        Path(cwd, "resulting_data", "NY1.csv"),
+        mode="w",
+        values=[
+            [
+                "tmp_id",
+                "crash_datetime",
+                "city",
+                "borough",
+                "neighborhood",
+                "location",
+                "weather",
+                "person_injured",
+                "person_killed",
+                "pedestrian_injured",
+                "pedestrian_killed",
+                "cyclist_injured",
+                "cyclist_killed",
+                "motorist_injured",
+                "motorist_killed",
+                "total_injured",
+                "total_killed",
+            ]
+        ],
+    )
+    write_csv(
+        Path(cwd, "resulting_data", "NY_with_weather.csv"),
+        mode="a",
+        values=data_with_boroughs_and_neighborhoods_and_weather.collect(),
+    )
 
 
 if __name__ == '__main__':
