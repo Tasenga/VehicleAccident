@@ -30,6 +30,7 @@ distances = accidents.join(
     weather,
     (weather.station.contains(accidents.borough))
     & (to_date(accidents.crash_datetime) == to_date(weather.date_time)),
+    how='leftouter',
 ).withColumn(
     'distance',
     abs(
@@ -42,8 +43,8 @@ min_distances = distances.groupBy("tmp_id").agg(
     min("distance").alias('distance')
 )
 print(min_distances.count())
-result = min_distances.join(
-    distances,
+result = distances.join(
+    min_distances,
     (min_distances.tmp_id == distances.tmp_id)
     & (min_distances.distance == distances.distance),
     how="leftouter",
@@ -57,5 +58,6 @@ result = min_distances.join(
 )
 
 result = result.dropDuplicates(["tmp_id"])
+result.show()
 print(result.count())
 print(datetime.now())
