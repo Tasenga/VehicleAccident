@@ -17,9 +17,8 @@ from pyspark.sql.functions import (
 )
 from pyspark.sql.types import IntegerType
 
-from work_with_document import spark_read_csv
+from work_with_document import spark_read_csv, write_csv
 
-# write_csv
 from prepare_weather_NY import prepare_weather_NY
 
 
@@ -357,16 +356,7 @@ def prepare_data_about_NY(spark):
     data_with_boroughs_and_neighborhoods = spark_read_csv(
         spark, Path(cwd, "resulting_data", "NY.csv")
     )
-    # data_with_boroughs_and_neighborhoods = \
-    #     data_with_boroughs_and_neighborhoods.filter(
-    #     (data_with_boroughs_and_neighborhoods
-    #     .crash_datetime > "2019-12-01")
-    #     & (data_with_boroughs_and_neighborhoods
-    #     .crash_datetime < "2020-01-01")
-    # )
-    print(
-        datetime.now(), "----", data_with_boroughs_and_neighborhoods.count()
-    )
+
     weather = prepare_weather_NY(
         spark,
         spark_read_csv(spark, Path(cwd, "resulting_data", "weather.csv")),
@@ -374,40 +364,37 @@ def prepare_data_about_NY(spark):
     data_with_boroughs_and_neighborhoods_and_weather = add_weather(
         data_with_boroughs_and_neighborhoods, weather
     )
-    data_with_boroughs_and_neighborhoods_and_weather.filter(
-        data_with_boroughs_and_neighborhoods_and_weather.weather.isNull()
-    ).show()
-    print(data_with_boroughs_and_neighborhoods_and_weather.count())
-    # write_csv(
-    #     Path(cwd, "resulting_data", "NY_with_weather.csv"),
-    #     mode="w",
-    #     values=[
-    #         [
-    #             "tmp_id",
-    #             "crash_datetime",
-    #             "city",
-    #             "borough",
-    #             "neighborhood",
-    #             "location",
-    #             "weather",
-    #             "person_injured",
-    #             "person_killed",
-    #             "pedestrian_injured",
-    #             "pedestrian_killed",
-    #             "cyclist_injured",
-    #             "cyclist_killed",
-    #             "motorist_injured",
-    #             "motorist_killed",
-    #             "total_injured",
-    #             "total_killed",
-    #         ]
-    #     ],
-    # )
-    # write_csv(
-    #     Path(cwd, "resulting_data", "NY_with_weather.csv"),
-    #     mode="a",
-    #     values=data_with_boroughs_and_neighborhoods_and_weather.collect(),
-    # )
+
+    write_csv(
+        Path(cwd, "resulting_data", "NY_with_weather.csv"),
+        mode="w",
+        values=[
+            [
+                "tmp_id",
+                "crash_datetime",
+                "city",
+                "borough",
+                "neighborhood",
+                "location",
+                "weather",
+                "person_injured",
+                "person_killed",
+                "pedestrian_injured",
+                "pedestrian_killed",
+                "cyclist_injured",
+                "cyclist_killed",
+                "motorist_injured",
+                "motorist_killed",
+                "total_injured",
+                "total_killed",
+            ]
+        ],
+    )
+    write_csv(
+        Path(cwd, "resulting_data", "NY_with_weather.csv"),
+        mode="a",
+        values=data_with_boroughs_and_neighborhoods_and_weather.collect(),
+    )
 
 
 if __name__ == '__main__':
