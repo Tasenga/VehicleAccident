@@ -1,4 +1,7 @@
-
+---
+## Default Kibana configuration from kibana-docker.
+## from https://github.com/elastic/kibana-docker/blob/master/build/kibana/config/kibana.yml
+#
 server.name: kibana
 server.host: "0"
 elasticsearch.hosts: "http://elasticsearch:9200"
@@ -7,8 +10,13 @@ map:
   regionmap:
     layers:
       - name: "Borough NYC"
-        url: "http://192.168.1.14:8000/new-york-city-boroughs.geojson"
+        url: "http://192.168.0.112:8000/new-york-city-boroughs.geojson"
         fields:
             - name: "name"
               description: "NYC Borough"
 
+      - name: "Neighborhoods NYC"
+        url: "http://192.168.0.112:8000/custom-pedia-cities-nyc-Mar2018.geojson"
+        fields:
+            - name: "neighborhood"
+              description: "neighborhood"
