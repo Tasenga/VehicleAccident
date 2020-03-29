@@ -1,6 +1,6 @@
 # VehicleAccident
 
-This application to analyze a motor vehicle collisions (crashes) per cities for the period from 2016 to 2019 inclusive.
+This application to analyze a motor vehicle collisions (crashes) per cities for the period from 01-07-2012 to 15-03-2020 inclusive.
 
 
 ### Prerequisites

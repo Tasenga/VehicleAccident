@@ -12,7 +12,7 @@ if __name__ == '__main__':
     cwd = dirname(abspath(__file__))
     spark = (
         SparkSession.builder.master("local")
-        .appName("prepare_and_save_data")
+        .appName("insert data to db")
         .config(
             "spark.jars",
             Path(dirname(abspath(__file__)), "postgresql-42.2.11.jar"),
@@ -21,7 +21,12 @@ if __name__ == '__main__':
     )
 
     data = spark_read_csv(
-        spark, Path(dirname(abspath(__file__)), "resulting_data", "NY.csv"),
+        spark,
+        Path(
+            dirname(abspath(__file__)),
+            "resulting_data",
+            "NY_with_weather.csv",
+        ),
     )
-    insert_to_db(data.drop("borough_from_raw_data"))
+    insert_to_db(data.drop("tmp_id"))
     print(f"{datetime.now()} - end program")

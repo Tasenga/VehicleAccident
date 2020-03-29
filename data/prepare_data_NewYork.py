@@ -18,7 +18,6 @@ from pyspark.sql.functions import (
 from pyspark.sql.types import IntegerType
 
 from work_with_document import spark_read_csv, write_csv
-
 from prepare_weather_NY import prepare_weather_NY
 
 
@@ -138,7 +137,10 @@ def primary_processing(raw_data):
             ),
         )
     )
-    clean_sdf = tmp_sdf.filter(tmp_sdf['location'].contains("POINT"))
+    clean_sdf = tmp_sdf.filter(
+        (tmp_sdf['location'].contains("POINT"))
+        & (tmp_sdf['location'] != "POINT (0 0)")
+    )
 
     df_injured = clean_sdf.withColumn(
         "total_injured",
@@ -331,30 +333,23 @@ def add_weather(data_with_boroughs_and_neighborhoods, weather):
 
 def prepare_data_about_NY(spark):
     cwd = dirname(abspath(__file__))
-    # raw_data = spark_read_csv(
-    #     spark,
-    #     Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
-    # )
-    # primary_processed_data = primary_processing(raw_data)
-    #
-    # boroughs = spark_read_csv(spark, Path(cwd, "data_source", "nybb.csv"))
-    # data_with_boroughs = add_boroughs(
-    #     spark,
-    #     primary_processed_data,
-    #     boroughs
-    # )
-    #
-    # neighborhoods = spark_read_csv(
-    #     spark, Path(cwd, "data_source", "ny_neighborhoods.csv")
-    # )
-    # data_with_boroughs_and_neighborhoods = add_neighborhoods(
-    #     spark, data_with_boroughs, neighborhoods
-    # )
-    # data_with_boroughs_and_neighborhoods = \
-    #     data_with_boroughs_and_neighborhoods.dropDuplicates(["tmp_id"])
+    raw_data = spark_read_csv(
+        spark,
+        Path(cwd, "data_source", "Motor_Vehicle_Collisions_-_Crashes.csv"),
+    )
+    primary_processed_data = primary_processing(raw_data)
 
-    data_with_boroughs_and_neighborhoods = spark_read_csv(
-        spark, Path(cwd, "resulting_data", "NY.csv")
+    boroughs = spark_read_csv(spark, Path(cwd, "data_source", "nybb.csv"))
+    data_with_boroughs = add_boroughs(spark, primary_processed_data, boroughs)
+
+    neighborhoods = spark_read_csv(
+        spark, Path(cwd, "data_source", "ny_neighborhoods.csv")
+    )
+    data_with_boroughs_and_neighborhoods = add_neighborhoods(
+        spark, data_with_boroughs, neighborhoods
+    )
+    data_with_boroughs_and_neighborhoods = data_with_boroughs_and_neighborhoods.dropDuplicates(  # noqa
+        ["tmp_id"]
     )
 
     weather = prepare_weather_NY(
@@ -391,7 +386,7 @@ def prepare_data_about_NY(spark):
         ],
     )
     write_csv(
-        Path(cwd, "resulting_data", "NY_with_weather.csv"),
+        Path(cwd, "resulting_data", "NY.csv"),
         mode="a",
         values=data_with_boroughs_and_neighborhoods_and_weather.collect(),
     )
