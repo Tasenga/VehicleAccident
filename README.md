@@ -38,6 +38,22 @@ To create Region map of New York vehicle accidents per boroughs:
 5. create new index (write 'ny_borough' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
 6. create new Region map for index pattern 'ny_borough' (http://localhost:5601/app/kibana#/visualize?_g=()).
 7. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms and Field=borough, Options->Layer Settings=Borough NYC and Join field=NYC Borough.
+8. Save Region map with name "NYC Boroughs"
+
+To create Region map of New York vehicle accidents per neighborhoods:
+9. create new index (write 'ny_neighborhoods' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
+10. create new Region map for index pattern 'ny_neighborhoods' (http://localhost:5601/app/kibana#/visualize?_g=()).
+11. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms, Field=neighborhood and Size=300, Options->Layer Settings=Neighborhoods NYC and Join field=neighborhood.
+12. Save Region map with name "NYC Neighborhoods"
+
+To create interactive controls for easy dashbord manipulations:
+13. create new Controls in Create Visualization menu.
+14. adjust the following settings: Controls ->choose Options list and click +Add button, Enter name for ex. 'Neighborhood' in Control Label, Index Pattern='ny_neighborhoods', Field=neighborhood.keyword. At the next block parametr choose Range slidebar and click +Add button, Enter name for ex. 'Number of accidents' in Control Label, Index Pattern='ny_neighborhoods', Field=count
+15. Apply changes and save Control with name "Conrols Visualization"
+
+To create Dashbord:
+16. create new dashbord in Dashbords menu. Click add and choose from a list next panels:"NYC Boroughs", "NYC Neighborhoods" and "Conrols Visualization".
+17. Save created Dashbord with any name.
 
 
 ## Running the tests
