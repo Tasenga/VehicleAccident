@@ -133,6 +133,7 @@ dmypy.json
 *.csv
 *.json
 *.geojson
+geo_data/
 
 #configuration
 config.ini

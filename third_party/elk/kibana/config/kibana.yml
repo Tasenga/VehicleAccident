@@ -10,13 +10,12 @@ map:
   regionmap:
     layers:
       - name: "Borough NYC"
-        url: "http://192.168.0.112:8000/new-york-city-boroughs.geojson"
+        url: "http://192.168.1.14:8000/new-york-city-boroughs.geojson"
         fields:
-            - name: "name"
-              description: "NYC Borough"
-
+            - name: "borough"
+              description: "NYC boroughs"
       - name: "Neighborhoods NYC"
-        url: "http://192.168.0.112:8000/custom-pedia-cities-nyc-Mar2018.geojson"
+        url: "http://192.168.1.14:8000/custom-pedia-cities-nyc-Mar2018.geojson"
         fields:
             - name: "neighborhood"
-              description: "neighborhood"
+              description: "NYC neighborhoods"

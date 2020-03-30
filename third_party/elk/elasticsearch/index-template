@@ -1,9 +1,9 @@
-POST _template/ny_borough
+POST _template/borough
 {
     "order" : 0,
     "version" : 1,
     "index_patterns" : [
-      "ny_borough*"
+      "boroughs*"
     ],
     "settings" : {
         "number_of_shards" : 1
@@ -11,6 +11,24 @@ POST _template/ny_borough
     "mappings" : {
         "properties" : {
             "borough": {"type": "keyword"},
+            "count": {"type": "integer"}
+        }
+    }
+}
+
+POST _template/neighborhood
+{
+    "order" : 0,
+    "version" : 1,
+    "index_patterns" : [
+      "neighborhoods*"
+    ],
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "properties" : {
+            "neighborhood": {"type": "keyword"},
             "count": {"type": "integer"}
         }
     }

@@ -27,28 +27,28 @@ Then, for running project do following steps:
 2. To install a local server using npm:
 2.1. in PowerShell (for Windows) move to the project directory .\VehicleAccident\third_party\geo_data and execute the command 'npm install http-server',
 in terminal (for Linux) move to the project directory ./VehicleAccident/third_party/geo_data and execute the command 'sudo npm install http-server';
-2.2. download geojson to the same directory from https://github.com/codeforamerica/click_that_hood/blob/master/public/data/new-york-city-boroughs.geojson (click 'download' and save the open data);
+2.2. download geojson about borders by the links indicated in additional materials to the same directory 2.1. (save the open data "ctrl+s");
 2.3. in PowerShell (for Windows) and in terminal (for Linux) in the same directory execute the command 'http-server --cors='kbn-version' -p 8000',
 (!!! NOTE for Windows you might need to configure the execution policy in advance: execute the command 'Set-ExecutionPolicy -Scope CurrentUser RemoteSigned').
-2.4. copy the available host starting with 'http://192....' from PowerShell (or terminal) and modify the file .\VehicleAccident\third_party\elk\kibana\config\kibana.yml by updating host on line 10.
+2.4. copy the available host starting with 'http://192....' from PowerShell (or terminal) and modify the file .\VehicleAccident\third_party\elk\kibana\config\kibana.yml by updating url.
 3.  run the elk docker from the project directory .\VehicleAccident\third_party\geo_data and execute the command 'docker-compose up --build' and wait the log message 'elk_logstash exited with code 0'.
 4. open Kibana in your internet browser via link http://localhost:5601.
 
 To create Region map of New York vehicle accidents per boroughs:
 5. create new index (write 'ny_borough' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
-6. create new Region map for index pattern 'ny_borough' (http://localhost:5601/app/kibana#/visualize?_g=()).
-7. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms and Field=borough, Options->Layer Settings=Borough NYC and Join field=NYC Borough.
+6. create new Region map for index pattern 'boroughs' (http://localhost:5601/app/kibana#/visualize?_g=()).
+7. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms and Field=borough, Options->Layer Settings=Borough NYC and Join field=NYC boroughs.
 8. Save Region map with name "NYC Boroughs"
 
 To create Region map of New York vehicle accidents per neighborhoods:
-9. create new index (write 'ny_neighborhoods' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
-10. create new Region map for index pattern 'ny_neighborhoods' (http://localhost:5601/app/kibana#/visualize?_g=()).
-11. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms, Field=neighborhood and Size=300, Options->Layer Settings=Neighborhoods NYC and Join field=neighborhood.
+9. create new index (write 'neighborhoods' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
+10. create new Region map for index pattern 'neighborhoods' (http://localhost:5601/app/kibana#/visualize?_g=()).
+11. adjust the following settings: Data->Metrics->Aggregation=Max and Field=count, Data->Buckets->Aggregation=Terms, Field=neighborhood and Size=300, Options->Layer Settings=Neighborhoods NYC and Join field=NYC neighborhoods.
 12. Save Region map with name "NYC Neighborhoods"
 
 To create interactive controls for easy dashbord manipulations:
 13. create new Controls in Create Visualization menu.
-14. adjust the following settings: Controls ->choose Options list and click +Add button, Enter name for ex. 'Neighborhood' in Control Label, Index Pattern='ny_neighborhoods', Field=neighborhood.keyword. At the next block parametr choose Range slidebar and click +Add button, Enter name for ex. 'Number of accidents' in Control Label, Index Pattern='ny_neighborhoods', Field=count
+14. adjust the following settings: Controls ->choose Options list and click +Add button, Enter name for ex. 'Neighborhood' in Control Label, Index Pattern='neighborhoods', Field=neighborhood.keyword. At the next block parametr choose Range slidebar and click +Add button, Enter name for ex. 'Number of accidents' in Control Label, Index Pattern='neighborhoods', Field=count
 15. Apply changes and save Control with name "Conrols Visualization"
 
 To create Dashbord:
@@ -63,10 +63,15 @@ don't ready ```
 ```Tests run from appropriate module after command in command line "python -m pytest discover -t ..".
 ```All tests should finish successful to push module changing to external repository.
 
+
 ## Additional materials
 
+The data about borders of boroughs in New York: https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/new-york-city-boroughs.geojson
+The data about borders of neighborhoods in New York: https://raw.githubusercontent.com/HodgesWardElliott/custom-nyc-neighborhoods/master/custom-pedia-cities-nyc-Mar2018.geojson
+The data about population in New York: https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Neighborhood-Tabulatio/swpk-hqdp
 To get the configuration parameters to get the access to the database ask the administrator database - Orlovskaya Anastasia.
 To get the raw data, ask the developers.
+
 
 ## Versioning
 
