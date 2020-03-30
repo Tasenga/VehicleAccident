@@ -44,7 +44,7 @@ def write_json(filepath, mode, values):
         file.write("\n")
 
 
-def insert_to_db(values):
+def insert_to_db(table, values):
     environ[
         'PYSPARK_SUBMIT_ARGS'
     ] = f"--jars file:///{Path('postgresql-42.2.11.jar')} pyspark-shell"
@@ -60,7 +60,7 @@ def insert_to_db(values):
     print(f"{datetime.now()} - successful connect to db")
     values.write.jdbc(
         db_url,
-        "accidents",
+        table,
         mode="append",
         properties={
             "user": db_prop['user'],
@@ -68,9 +68,4 @@ def insert_to_db(values):
             "driver": "org.postgresql.Driver",
         },
     )
-    print(
-        """{} - records about accidents
-        were inserted successfully""".format(
-            datetime.now()
-        )
-    )
+    print(f"{datetime.now()} - records were inserted successfully")

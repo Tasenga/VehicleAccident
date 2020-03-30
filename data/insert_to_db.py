@@ -24,9 +24,16 @@ if __name__ == '__main__':
         spark,
         Path(
             dirname(abspath(__file__)),
-            "resulting_data",
-            "NY_with_weather.csv",
+            "data_source",
+            "New_York_City_Population_By_Neighborhood_Tabulation_Areas.csv",
         ),
     )
-    insert_to_db(data.drop("tmp_id"))
+    data = (
+        data.withColumnRenamed("Borough", "borough")
+        .withColumnRenamed("NTA Name", "neighborhood")
+        .withColumnRenamed("Population", "population")
+    )
+    insert_to_db(
+        "population_NY", data.drop("Year", "FIPS County Code", "NTA Code")
+    )
     print(f"{datetime.now()} - end program")
