@@ -51,3 +51,21 @@ POST _template/weather
         }
     }
 }
+
+POST _template/chi_neighborhoods
+{
+    "order" : 0,
+    "version" : 1,
+    "index_patterns" : [
+      "chi_neighborhoods*"
+    ],
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "properties" : {
+            "neighborhoodchi": {"type": "keyword"},
+            "countchi": {"type": "float"}
+        }
+    }
+}

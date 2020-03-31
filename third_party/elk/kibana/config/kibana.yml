@@ -19,3 +19,8 @@ map:
         fields:
             - name: "neighborhood"
               description: "NYC neighborhoods"
+      - name: "Neighborhoods Chicago"
+        url: "http://192.168.1.14:8000/chicago_borough.geojson"
+        fields:
+            - name: "community"
+              description: "Chicago neighborhoods"
