@@ -33,3 +33,21 @@ POST _template/neighborhood
         }
     }
 }
+
+POST _template/weather
+{
+    "order" : 0,
+    "version" : 1,
+    "index_patterns" : [
+      "weather*"
+    ],
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "properties" : {
+            "weather": {"type": "keyword"},
+            "accidents_per_hour": {"type": "float"}
+        }
+    }
+}

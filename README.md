@@ -51,8 +51,18 @@ To create interactive controls for easy dashbord manipulations:
 14. adjust the following settings: Controls ->choose Options list and click +Add button, Enter name for ex. 'Neighborhood' in Control Label, Index Pattern='neighborhoods', Field=neighborhood.keyword. At the next block parametr choose Range slidebar and click +Add button, Enter name for ex. 'Number of accidents' in Control Label, Index Pattern='neighborhoods', Field=count
 15. Apply changes and save Control with name "Conrols Visualization"
 
+To create Vertical Bar of the impact of weather on the accident rate in New York:
+16. create new index (write 'weather' into the index pattern field on http://localhost:5601/app/kibana#/management/kibana/index_pattern?_g=() and follow the advices of Kibana).
+17. create new Vertical Bar for index pattern 'weather' (http://localhost:5601/app/kibana#/visualize?_g=()).
+18. adjust the following settings: Data->Metrics->Aggregation=Max and Field=accidents_per_hour and Custom Label=accidents_per_hour, Data->Buckets->Aggregation=Terms, Field=weather.keyword and Size=14 and Custom Label=type_of_weather.
+19. Save Vertical Bar with name "The impact of weather on the accident rate in New York"
+
 To create Dashbord:
-16. create new dashbord in Dashbords menu. Click add and choose from a list next panels:"NYC Boroughs", "NYC Neighborhoods" and "Conrols Visualization".
+16. create new dashbord in Dashbords menu. Click add and choose from a list next panels:
+- "NYC Boroughs",
+- "NYC Neighborhoods"
+- "Controls Visualization"
+- "The impact of weather on the accident rate in New York"
 17. Save created Dashbord with any name.
 
 
