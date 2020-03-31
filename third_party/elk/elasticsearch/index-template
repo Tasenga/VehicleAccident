@@ -1,4 +1,4 @@
-POST _template/borough
+POST _template/boroughs
 {
     "order" : 0,
     "version" : 1,
@@ -16,7 +16,7 @@ POST _template/borough
     }
 }
 
-POST _template/neighborhood
+POST _template/neighborhoods
 {
     "order" : 0,
     "version" : 1,

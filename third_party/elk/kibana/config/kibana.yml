@@ -9,10 +9,10 @@ elasticsearch.hosts: "http://elasticsearch:9200"
 map:
   regionmap:
     layers:
-      - name: "Borough NYC"
+      - name: "Boroughs NYC"
         url: "http://192.168.1.14:8000/new-york-city-boroughs.geojson"
         fields:
-            - name: "borough"
+            - name: "name"
               description: "NYC boroughs"
       - name: "Neighborhoods NYC"
         url: "http://192.168.1.14:8000/custom-pedia-cities-nyc-Mar2018.geojson"
