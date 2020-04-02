@@ -1,11 +1,14 @@
+import logging
 import csv
 from json import loads, dump
 from os import environ
 from configparser import ConfigParser
-from datetime import datetime
 from pathlib import Path
 
 from pyspark import SparkFiles
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def spark_read_csv(sparksession, filepath):
@@ -57,7 +60,7 @@ def insert_to_db(table, values):
     db_properties['username'] = db_prop['user']
     db_properties['password'] = db_prop['password']
     db_properties['driver'] = "org.postgresql.Driver"
-    print(f"{datetime.now()} - successful connect to db")
+    _LOGGER.info("successful connect to db")
     values.write.jdbc(
         db_url,
         table,
@@ -68,4 +71,4 @@ def insert_to_db(table, values):
             "driver": "org.postgresql.Driver",
         },
     )
-    print(f"{datetime.now()} - records were inserted successfully")
+    _LOGGER.info("records were inserted successfully")

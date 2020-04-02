@@ -29,23 +29,4 @@ if __name__ == '__main__':
         ),
     )
     insert_to_db("accidents", accidents.drop("tmp_id"))
-
-    population = spark_read_csv(
-        spark,
-        Path(
-            dirname(abspath(__file__)),
-            "data_source",
-            "New_York_City_Population_By_Neighborhood_Tabulation_Areas.csv",
-        ),
-    )
-    population = (
-        population.withColumnRenamed("Borough", "borough")
-        .withColumnRenamed("NTA Name", "neighborhood")
-        .withColumnRenamed("Population", "population")
-    )
-    insert_to_db(
-        "population_NY",
-        population.drop("Year", "FIPS County Code", "NTA Code"),
-    )
-
     print(f"{datetime.now()} - end program")

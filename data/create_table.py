@@ -48,19 +48,6 @@ def create_table_accidents(connect):
     connect.commit()
 
 
-def create_table_population(connect):
-    cur = connect.cursor()
-    cur.execute(
-        '''CREATE TABLE IF NOT EXISTS population_NY
-        (id SERIAL PRIMARY KEY,
-        borough varchar NOT NULL,
-        neighborhood varchar NOT NULL,
-        population int NOT NULL);'''
-    )
-    _LOGGER.debug("Table about population created successfully")
-    connect.commit()
-
-
 if __name__ == '__main__':
     logging.basicConfig(
         level=logging.DEBUG,
@@ -69,6 +56,5 @@ if __name__ == '__main__':
     _LOGGER.debug("start program")
     con = connect_postgresql()
     create_table_accidents(con)
-    create_table_population(con)
     con.close()
     _LOGGER.debug("end program")
