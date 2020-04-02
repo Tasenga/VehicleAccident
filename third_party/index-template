@@ -1,3 +1,20 @@
+POST _template/ny_boroughs
+{
+    "order" : 0,
+    "version" : 1,
+    "index_patterns" : [
+      "ny_boroughs*"
+    ],
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "properties" : {
+            "ny_borough": {"type": "keyword"},
+            "ny_number_of_accidents_per_borough": {"type": "integer"}
+        }
+    }
+}
 
 POST _template/ny_weather
 {
@@ -38,26 +55,7 @@ POST _template/ny_neighborhoods
 			"cyclist_injured": {"type": "integer"},
 			"cyclist_killed": {"type": "integer"},
 			"motorist_injured": {"type": "integer"},
-			"motorist_killed": {"type": "integer"},
-			"dangerous_range": {"type": "integer"}
-        }
-    }
-}
-
-POST _template/ny_boroughs
-{
-    "order" : 0,
-    "version" : 1,
-    "index_patterns" : [
-      "ny_boroughs*"
-    ],
-    "settings" : {
-        "number_of_shards" : 1
-    },
-    "mappings" : {
-        "properties" : {
-            "ny_borough": {"type": "keyword"},
-            "ny_number_of_accidents_per_borough": {"type": "integer"}
+			"motorist_killed": {"type": "integer"}
         }
     }
 }
@@ -80,21 +78,22 @@ POST _template/chi_neighborhoods
     }
 }
 
-POST _template/ny_population
+POST _template/ny_neighborhoods_in_range
 {
     "order" : 0,
     "version" : 1,
     "index_patterns" : [
-      "ny_population*"
+      "ny_neighborhoods_in_range*"
     ],
     "settings" : {
         "number_of_shards" : 1
     },
     "mappings" : {
         "properties" : {
-            "ny_neighborhood_with_population": {"type": "keyword"},
-            "ny_population": {"type": "integer"}
-            "ny_number_of_accidents_per_neigborhood_with_population": {"type": "integer"}
+            "ny_neighborhood_in_range": {"type": "keyword"},
+            "ny_number_of_accidents_per_neigborhood_in_range": {"type": "integer"}
+            "dangerous_range": {"type": "integer"}
         }
     }
 }
+

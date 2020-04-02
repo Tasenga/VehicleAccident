@@ -10,17 +10,17 @@ map:
   regionmap:
     layers:
       - name: "Boroughs NYC"
-        url: "http://localhost:8000/new-york-city-boroughs.geojson"
+        url: "http://localhost:8000/nyc_boroughs.geojson"
         fields:
-            - name: "name"
+            - name: "borough"
               description: "NYC boroughs"
       - name: "Neighborhoods NYC"
-        url: "http://localhost:8000/custom-pedia-cities-nyc-Mar2018.geojson"
+        url: "http://localhost:8000/nyc_neighborhoods.geojson"
         fields:
             - name: "neighborhood"
               description: "NYC neighborhoods"
       - name: "Neighborhoods Chicago"
-        url: "http://localhost:8000/chicago_borough.geojson"
+        url: "http://localhost:8000/chicago_boroughs.geojson"
         fields:
             - name: "community"
               description: "Chicago neighborhoods"

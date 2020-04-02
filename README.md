@@ -15,6 +15,8 @@ postgresql (https://www.postgresql.org/) if you want to use the database directl
 Also you need:
 - create own virtual environment (command in terminal in project root directory 'python -m venv env)';
 - install requirements execute the command in terminal 'pip install -r requirements.txt' (or for Linux 'sudo pip install -r requirements.txt').
+!!! NOTE for Windows you might need to use wheel to install requirements package rasterio and GDAL.
+    Check your system parameters and get suitable wheel via link https://www.lfd.uci.edu/~gohlke/pythonlibs/#rasterio.
 
 
 ## Getting Started
