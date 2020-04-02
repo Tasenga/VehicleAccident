@@ -132,8 +132,7 @@ dmypy.json
 #data
 *.csv
 *.json
-*.geojson
-geo_data/
+node_modules/
 
 #configuration
 config.ini
