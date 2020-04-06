@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "6de84430-77d1-11ea-983a-db84d04fef3e",
+    "_type": "visualization",
+    "_source": {
+      "title": "NY The impact of weather on accident",
+      "visState": "{\"title\":\"NY The impact of weather on accident\",\"type\":\"histogram\",\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\",\"mode\":\"normal\",\"setYExtents\":false,\"defaultYExtents\":false},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100},\"title\":{\"text\":\"number of accidents\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"number of accidents\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"max\",\"schema\":\"metric\",\"params\":{\"field\":\"number_of_accidents_per_hour\",\"customLabel\":\"number of accidents\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"type_of_weather.keyword\",\"size\":14,\"order\":\"desc\",\"orderBy\":\"1\",\"otherBucket\":false,\"otherBucketLabel\":\"\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"exclude\":\"\",\"include\":\"\",\"customLabel\":\"type of weather\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"significant_terms\",\"schema\":\"group\",\"params\":{\"field\":\"type_of_weather.keyword\",\"size\":1}}]}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"number of accidents\":\"#447EBC\",\"T-Storm\":\"#3F6833\",\"Thunder\":\"#3F6833\",\"Heavy Rain\":\"#3F6833\",\"Fog\":\"#3F6833\",\"Snow\":\"#3F6833\",\"Wintry\":\"#3F6833\",\"Rain\":\"#3F6833\",\"Heavy Snow\":\"#3F6833\",\"Freezing Rain\":\"#3F6833\",\"Windy\":\"#3F6833\",\"Fair\":\"#E5AC0E\",\"Cloudy\":\"#3F6833\",\"Partly Cloudy\":\"#3F6833\",\"Mostly Cloudy\":\"#3F6833\"},\"legendOpen\":true}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+      }
+    },
+    "_migrationVersion": {
+      "visualization": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "type": "index-pattern",
+        "id": "3c645520-77d1-11ea-983a-db84d04fef3e"
+      }
+    ]
+  }
+]
