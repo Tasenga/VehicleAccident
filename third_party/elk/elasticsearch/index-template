@@ -80,12 +80,12 @@ POST _template/chi_neighborhoods
     }
 }
 
-POST _template/ny_population
+POST _template/ny_populations
 {
     "order" : 0,
     "version" : 1,
     "index_patterns" : [
-      "ny_population*"
+      "ny_populations*"
     ],
     "settings" : {
         "number_of_shards" : 1
@@ -95,6 +95,32 @@ POST _template/ny_population
             "ny_neighborhood_with_population": {"type": "keyword"},
             "ny_population": {"type": "integer"}
             "ny_number_of_accidents_per_neigborhood_with_population": {"type": "integer"}
+        }
+    }
+}
+
+POST _template/ny_accidents
+{
+    "order" : 0,
+    "version" : 1,
+    "index_patterns" : [
+      "ny_accidents*"
+    ],
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "properties" : {
+			"borough": {"type": "string"},
+            "neighborhood": {"type": "keyword"},
+			"person_injured": {"type": "integer"},
+			"person_killed": {"type": "integer"},
+			"pedestrian_injured": {"type": "integer"},
+			"pedestrian_killed": {"type": "integer"},
+			"cyclist_injured": {"type": "integer"},
+			"cyclist_killed": {"type": "integer"},
+			"motorist_injured": {"type": "integer"},
+			"motorist_killed": {"type": "integer"}
         }
     }
 }

@@ -1,0 +1,78 @@
+[
+  {
+    "_id": "086373a0-77db-11ea-a602-29870b68a04d",
+    "_type": "dashboard",
+    "_source": {
+      "title": "NEW YORK region map",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"version\":\"7.0.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"2\",\"version\":\"7.0.0\",\"panelRefName\":\"panel_1\"}]",
+      "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156279687\",\"disabled\":false,\"key\":\"pedestrian_injured\",\"negate\":false,\"params\":{\"gte\":0,\"lte\":2267},\"type\":\"range\",\"value\":\"0 to 2,267\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\"},\"range\":{\"pedestrian_injured\":{\"gte\":0,\"lte\":2267}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156318539\",\"disabled\":false,\"key\":\"cyclist_killed\",\"negate\":false,\"params\":{\"gte\":0,\"lte\":7},\"type\":\"range\",\"value\":\"0 to 7\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[1].meta.index\"},\"range\":{\"cyclist_killed\":{\"gte\":0,\"lte\":7}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156305798\",\"disabled\":false,\"key\":\"cyclist_injured\",\"negate\":false,\"params\":{\"gte\":0,\"lte\":1305},\"type\":\"range\",\"value\":\"0 to 1,305\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[2].meta.index\"},\"range\":{\"cyclist_injured\":{\"gte\":0,\"lte\":1305}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156345559\",\"disabled\":false,\"key\":\"motorist_killed\",\"negate\":false,\"params\":{\"gte\":0,\"lte\":20},\"type\":\"range\",\"value\":\"0 to 20\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[3].meta.index\"},\"range\":{\"motorist_killed\":{\"gte\":0,\"lte\":20}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156355676\",\"disabled\":false,\"key\":\"dangerous_range\",\"negate\":false,\"params\":{\"gte\":1,\"lte\":257},\"type\":\"range\",\"value\":\"1 to 257\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[4].meta.index\"},\"range\":{\"dangerous_range\":{\"gte\":1,\"lte\":257}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156330243\",\"disabled\":false,\"key\":\"motorist_injured\",\"negate\":false,\"params\":{\"gte\":2,\"lte\":9148},\"type\":\"range\",\"value\":\"2 to 9,148\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[5].meta.index\"},\"range\":{\"motorist_injured\":{\"gte\":2,\"lte\":9148}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586156222894\",\"disabled\":false,\"key\":\"person_injured\",\"negate\":false,\"params\":{\"gte\":4,\"lte\":11279},\"type\":\"range\",\"value\":\"4 to 11,279\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[6].meta.index\"},\"range\":{\"person_injured\":{\"gte\":4,\"lte\":11279}}},{\"meta\":{\"controlledBy\":\"1586156293695\",\"type\":\"range\",\"key\":\"pedestrian_killed\",\"value\":\"0 to 37\",\"params\":{\"gte\":0,\"lte\":37},\"disabled\":false,\"negate\":false,\"alias\":null,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[7].meta.index\"},\"range\":{\"pedestrian_killed\":{\"gte\":0,\"lte\":37}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"controlledBy\":\"1586156266743\",\"type\":\"range\",\"key\":\"person_killed\",\"value\":\"0 to 55\",\"params\":{\"gte\":0,\"lte\":55},\"disabled\":false,\"negate\":false,\"alias\":null,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[8].meta.index\"},\"range\":{\"person_killed\":{\"gte\":0,\"lte\":55}},\"$state\":{\"store\":\"appState\"}}]}"
+      }
+    },
+    "_migrationVersion": {
+      "dashboard": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[1].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[2].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[3].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[4].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[5].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[6].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[7].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[8].meta.index",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "panel_0",
+        "type": "visualization",
+        "id": "c7400d90-77d3-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "panel_1",
+        "type": "visualization",
+        "id": "3e1001f0-77d4-11ea-983a-db84d04fef3e"
+      }
+    ]
+  }
+]

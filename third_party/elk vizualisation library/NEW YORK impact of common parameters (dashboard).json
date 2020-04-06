@@ -1,0 +1,33 @@
+[
+  {
+    "_id": "6312c8a0-77db-11ea-a602-29870b68a04d",
+    "_type": "dashboard",
+    "_source": {
+      "title": "NEW YORK impact of common parameters",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":15,\"i\":\"1\"},\"version\":\"7.0.0\",\"panelIndex\":\"1\",\"embeddableConfig\":{},\"panelRefName\":\"panel_0\"},{\"gridData\":{\"x\":0,\"y\":15,\"w\":24,\"h\":15,\"i\":\"2\"},\"version\":\"7.0.0\",\"panelIndex\":\"2\",\"embeddableConfig\":{},\"panelRefName\":\"panel_1\"}]",
+      "optionsJSON": "{\"useMargins\":true,\"hidePanelTitles\":false}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+      }
+    },
+    "_migrationVersion": {
+      "dashboard": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "panel_0",
+        "type": "visualization",
+        "id": "6de84430-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "panel_1",
+        "type": "visualization",
+        "id": "7474a9c0-77da-11ea-a602-29870b68a04d"
+      }
+    ]
+  }
+]

@@ -131,7 +131,8 @@ dmypy.json
 
 #data
 *.csv
-*.json
+data_source/
+resulting_data/
 node_modules/
 
 #configuration

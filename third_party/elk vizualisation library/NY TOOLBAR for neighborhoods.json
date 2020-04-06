@@ -1,0 +1,66 @@
+[
+  {
+    "_id": "3e1001f0-77d4-11ea-983a-db84d04fef3e",
+    "_type": "visualization",
+    "_source": {
+      "title": "NY TOOLBAR for neighborhoods",
+      "visState": "{\"title\":\"NY TOOLBAR for neighborhoods\",\"type\":\"input_control_vis\",\"params\":{\"controls\":[{\"id\":\"1586156355676\",\"fieldName\":\"dangerous_range\",\"parent\":\"\",\"label\":\"safe/dangerous neighborhoods\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_0_index_pattern\"},{\"id\":\"1586156222894\",\"fieldName\":\"person_injured\",\"parent\":\"\",\"label\":\"person injured\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_1_index_pattern\"},{\"id\":\"1586156266743\",\"fieldName\":\"person_killed\",\"parent\":\"\",\"label\":\"person killed\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_2_index_pattern\"},{\"id\":\"1586156279687\",\"fieldName\":\"pedestrian_injured\",\"parent\":\"\",\"label\":\"pedestrian injured\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_3_index_pattern\"},{\"id\":\"1586156293695\",\"fieldName\":\"pedestrian_killed\",\"parent\":\"\",\"label\":\"pedestrian killed\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_4_index_pattern\"},{\"id\":\"1586156305798\",\"fieldName\":\"cyclist_injured\",\"parent\":\"\",\"label\":\"cyclist injured\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_5_index_pattern\"},{\"id\":\"1586156318539\",\"fieldName\":\"cyclist_killed\",\"parent\":\"\",\"label\":\"cyclist killed\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_6_index_pattern\"},{\"id\":\"1586156330243\",\"fieldName\":\"motorist_injured\",\"parent\":\"\",\"label\":\"motorist injured\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_7_index_pattern\"},{\"id\":\"1586156345559\",\"fieldName\":\"motorist_killed\",\"parent\":\"\",\"label\":\"motorist killed\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_8_index_pattern\"}],\"updateFiltersOnChange\":true,\"useTimeFilter\":false,\"pinFilters\":false},\"aggs\":[]}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+      }
+    },
+    "_migrationVersion": {
+      "visualization": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "control_0_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_1_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_2_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_3_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_4_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_5_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_6_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_7_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      },
+      {
+        "name": "control_8_index_pattern",
+        "type": "index-pattern",
+        "id": "2fef3ee0-77d1-11ea-983a-db84d04fef3e"
+      }
+    ]
+  }
+]

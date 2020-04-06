@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "7474a9c0-77da-11ea-a602-29870b68a04d",
+    "_type": "visualization",
+    "_source": {
+      "title": "NY The impact of population on number of accidents",
+      "visState": "{\"title\":\"NY The impact of population on number of accidents\",\"type\":\"vega\",\"params\":{\"spec\":\"{\\n  $schema: \\\"https://vega.github.io/schema/vega-lite/v2.json\\\"\\n  mark: point\\n  data: {\\n    url: {\\n      %context%: true\\n      index: ny_populations\\n      body: {\\n        size: 10000,\\n        _source: [\\\"ny_neighborhood_with_population\\\", \\\"ny_population\\\", \\\"ny_number_of_accidents_per_neigborhood_with_population\\\"]\\n      }\\n    }\\n    format: { property: \\\"hits.hits\\\" }\\n  }\\n selection: {\\n    pts: {\\n      type: single\\n      on: mouseover\\n    }\\n    brush: {\\n      type: interval\\n      encodings: [\\\"x\\\"]\\n    }\\n }\\n  encoding: {\\n    y: {\\n      field: _source.ny_population\\n      type: quantitative\\n      axis: { title: \\\"population\\\" }\\n    }\\n    x: {\\n      field: _source.ny_number_of_accidents_per_neigborhood_with_population\\n      type: quantitative\\n      axis: { title: \\\"number of accidents\\\" }\\n      scale: {type: \\\"log\\\" }\\n    }\\n    tooltip: {\\n      field: _source.ny_neighborhood_with_population\\n      type: nominal\\n    }\\n    color: {\\n      value: \\\"#2d4059\\\"\\n      condition: {\\n        selection: pts\\n        value: \\\"#ffb400\\\"\\n      }\\n    }\\n    size:{\\n      value: 75\\n    }\\n  }\\n}\\n\"},\"aggs\":[]}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[]}"
+      }
+    },
+    "_migrationVersion": {
+      "visualization": "7.0.0"
+    },
+    "_references": []
+  }
+]
