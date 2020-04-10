@@ -73,7 +73,21 @@ def create_table_weather_duration_ny():
     )
     _LOGGER.info("Table about weather duration created successfully")
     connect.commit()
-    con.close()
+    connect.close()
+
+
+def create_table_weather_duration_chi():
+    connect = connect_postgresql()
+    cur = connect.cursor()
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS weather_duration_chi
+        (id SERIAL PRIMARY KEY,
+        weather varchar NOT NULL,
+        duration_min float NOT NULL);'''
+    )
+    _LOGGER.info("Table about weather duration created successfully")
+    connect.commit()
+    connect.close()
 
 
 if __name__ == '__main__':
@@ -94,20 +108,31 @@ if __name__ == '__main__':
         .getOrCreate()
     )
 
-    weather = spark_read_csv(
+    _LOGGER.info("start count weather duration")
+    weather_ny = spark_read_csv(
         spark, Path(cwd, "resulting_data", "weather.csv")
     )
-
-    _LOGGER.info("start count weather duration")
-    weather_duration = count_duration(spark, weather).repartition(4)
+    weather_duration_ny = count_duration(spark, weather_ny).repartition(4)
     _LOGGER.info("end count weather duration")
-
-    con = connect_postgresql()
+    _LOGGER.info(
+        "start insert data about weather duration in New York to database"
+    )
     create_table_weather_duration_ny()
-    con.close()
+    insert_to_db("weather_duration_ny", weather_duration_ny)
+    _LOGGER.info(
+        "end insert data about weather duration in New York to database"
+    )
 
-    _LOGGER.info("start insert data about weather duration to database")
-    insert_to_db("weather_duration_ny", weather_duration)
-    _LOGGER.info("end insert data about weather duration to database")
+    _LOGGER.info(
+        "start insert data about weather duration in Chicago to database"
+    )
+    weather_duration_chi = spark_read_csv(
+        spark, Path(cwd, "data_source", "chiweather.csv")
+    )
+    create_table_weather_duration_chi()
+    insert_to_db("weather_duration_chi", weather_duration_chi)
+    _LOGGER.info(
+        "end insert data about weather duration in Chicago to database"
+    )
 
     _LOGGER.info("end program")

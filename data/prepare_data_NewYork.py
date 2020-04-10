@@ -1,6 +1,6 @@
 from pathlib import Path
 from os.path import dirname, abspath
-from datetime import datetime
+import logging
 
 from geospark.register import GeoSparkRegistrator
 from pyspark.sql import SparkSession
@@ -17,8 +17,11 @@ from pyspark.sql.functions import (
 )
 from pyspark.sql.types import IntegerType
 
-from work_with_document import spark_read_csv, write_csv
+from work_with_document import spark_read_csv, write_csv, insert_to_db
 from prepare_weather_NY import prepare_weather_NY
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def primary_processing(raw_data):
@@ -393,8 +396,36 @@ def prepare_data_about_NY(spark):
 
 
 if __name__ == '__main__':
-    print(f"{datetime.now()} - start program")
-    spark = SparkSession.builder.getOrCreate()
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+
+    _LOGGER.info("start program")
+
+    _LOGGER.info("start preparation")
+    cwd = dirname(abspath(__file__))
+    spark = (
+        SparkSession.builder.master("local")
+        .appName("insert data to db")
+        .config(
+            "spark.jars",
+            Path(dirname(abspath(__file__)), "postgresql-42.2.11.jar"),
+        )
+        .getOrCreate()
+    )
     GeoSparkRegistrator.registerAll(spark)
     prepare_data_about_NY(spark)
-    print(f"{datetime.now()} - end program")
+    _LOGGER.info("end preparation")
+
+    _LOGGER.info("start insert")
+    accidents = spark_read_csv(
+        spark,
+        Path(
+            dirname(abspath(__file__)),
+            "resulting_data",
+            "NY_with_weather.csv",
+        ),
+    )
+    insert_to_db("accidents", accidents.drop("tmp_id"))
+    _LOGGER.info("end program")

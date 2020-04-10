@@ -33,8 +33,7 @@ def create_table_processed_data_about_population():
         '''CREATE TABLE IF NOT EXISTS proc_population_NY
         (id SERIAL PRIMARY KEY,
         neighborhood varchar,
-        population float,
-        accidents int);'''
+        population float);'''
     )
     _LOGGER.info("Table about population created successfully")
     connect.commit()
@@ -81,6 +80,6 @@ if __name__ == '__main__':
     population2 = spark_read_csv(
         spark, Path(cwd, "data_source", "neighborhoods_population.csv",),
     )
-    insert_to_db("proc_population_NY", population2.drop("id", "id1"))
+    insert_to_db("proc_population_NY", population2.drop("id"))
 
     _LOGGER.info("end program")

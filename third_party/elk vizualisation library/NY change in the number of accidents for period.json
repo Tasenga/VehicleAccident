@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "f73b7940-78c2-11ea-bf15-d9c584aa3b63",
+    "_type": "visualization",
+    "_source": {
+      "title": "NY change in the number of accidents for period",
+      "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{\"customBucket\":{\"enabled\":true,\"id\":\"1-bucket\",\"params\":{\"customInterval\":\"2h\",\"drop_partials\":false,\"extended_bounds\":{},\"field\":\"ny_crash_datetime_per_month\",\"interval\":\"auto\",\"min_doc_count\":1,\"timeRange\":{\"from\":\"2020-01-27T20:40:06.466Z\",\"to\":\"2020-03-29T21:08:18.620Z\"},\"time_zone\":\"Europe/Minsk\",\"useNormalizedEsInterval\":true},\"schema\":{\"aggFilter\":[],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"max\":null,\"min\":0,\"name\":\"bucketAgg\",\"params\":[],\"title\":\"Bucket Agg\"},\"type\":\"date_histogram\"},\"customLabel\":\"change in number of accidents\",\"customMetric\":{\"enabled\":true,\"id\":\"1-metric\",\"params\":{\"customLabel\":\"\",\"field\":\"ny_delta_number_of_accidents\"},\"schema\":{\"aggFilter\":[\"!top_hits\",\"!percentiles\",\"!percentile_ranks\",\"!median\",\"!std_dev\",\"!sum_bucket\",\"!avg_bucket\",\"!min_bucket\",\"!max_bucket\",\"!derivative\",\"!moving_avg\",\"!serial_diff\",\"!cumulative_sum\",\"!geo_bounds\",\"!geo_centroid\"],\"deprecate\":false,\"editor\":false,\"group\":\"none\",\"max\":null,\"min\":0,\"name\":\"metricAgg\",\"params\":[],\"title\":\"Metric Agg\"},\"type\":\"max\"}},\"schema\":\"metric\",\"type\":\"sum_bucket\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customLabel\":\"neighborhood\",\"field\":\"ny_neighborhood.keyword\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"order\":\"desc\",\"orderBy\":\"_key\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"size\":285},\"schema\":\"segment\",\"type\":\"terms\"}],\"params\":{\"addTooltip\":true,\"colorSchema\":\"Green to Red\",\"emsHotLink\":null,\"isDisplayWarning\":true,\"legendPosition\":\"bottomright\",\"mapCenter\":[0,0],\"mapZoom\":2,\"outlineWeight\":1,\"selectedJoinField\":{\"description\":\"NYC neighborhoods\",\"name\":\"neighborhood\"},\"selectedLayer\":{\"fields\":[{\"description\":\"NYC neighborhoods\",\"name\":\"neighborhood\"}],\"format\":{\"type\":\"geojson\"},\"isEMS\":false,\"layerId\":\"self_hosted.Neighborhoods NYC\",\"meta\":{\"feature_collection_path\":\"data\"},\"name\":\"Neighborhoods NYC\",\"url\":\"http://localhost:8000/nyc_neighborhoods.geojson\"},\"showAllShapes\":true,\"wms\":{\"enabled\":false,\"options\":{\"format\":\"image/png\",\"transparent\":true},\"selectedTmsLayer\":{\"attribution\":\"<p>&#169; <a href=\\\"https://www.openstreetmap.org/copyright\\\">OpenStreetMap contributors</a>|<a href=\\\"https://openmaptiles.org\\\">OpenMapTiles</a>|<a href=\\\"https://www.elastic.co/elastic-maps-service\\\">Elastic Maps Service</a></p>&#10;\",\"id\":\"road_map\",\"maxZoom\":10,\"minZoom\":0,\"origin\":\"elastic_maps_service\"}}},\"title\":\"NY change in the number of accidents for period\",\"type\":\"region_map\"}",
+      "uiStateJSON": "{\"mapZoom\":10,\"mapCenter\":[40.70616352495903,-73.97780021351177]}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+      }
+    },
+    "_migrationVersion": {
+      "visualization": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "type": "index-pattern",
+        "id": "4222bcd0-790d-11ea-8a3e-2f41156f7a92"
+      }
+    ]
+  }
+]

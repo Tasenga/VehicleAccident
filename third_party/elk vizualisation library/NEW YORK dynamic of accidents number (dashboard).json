@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "329542a0-78c3-11ea-bf15-d9c584aa3b63",
+    "_type": "dashboard",
+    "_source": {
+      "title": "NEW YORK dynamic of accidents number",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":23,\"i\":\"1\",\"w\":39,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"version\":\"7.0.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":5,\"i\":\"2\",\"w\":9,\"x\":39,\"y\":0},\"panelIndex\":\"2\",\"version\":\"7.0.0\",\"panelRefName\":\"panel_1\"}]",
+      "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"controlledBy\":\"1586259087454\",\"disabled\":false,\"key\":\"ny_delta_number_of_accidents\",\"negate\":false,\"params\":{\"gte\":-81,\"lte\":69},\"type\":\"range\",\"value\":\"-81 to 69\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\"},\"range\":{\"ny_delta_number_of_accidents\":{\"gte\":-81,\"lte\":69}}}]}"
+      }
+    },
+    "_migrationVersion": {
+      "dashboard": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+        "type": "index-pattern",
+        "id": "85ee7fd0-78c2-11ea-bf15-d9c584aa3b63"
+      },
+      {
+        "name": "panel_0",
+        "type": "visualization",
+        "id": "f73b7940-78c2-11ea-bf15-d9c584aa3b63"
+      },
+      {
+        "name": "panel_1",
+        "type": "visualization",
+        "id": "9fba3d40-78c3-11ea-bf15-d9c584aa3b63"
+      }
+    ]
+  }
+]

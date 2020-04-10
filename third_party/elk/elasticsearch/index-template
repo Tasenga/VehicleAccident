@@ -99,28 +99,28 @@ POST _template/ny_populations
     }
 }
 
-POST _template/ny_accidents
+POST _template/ny_accident_dynamics
 {
     "order" : 0,
     "version" : 1,
     "index_patterns" : [
-      "ny_accidents*"
+      "ny_accident_dynamics*"
     ],
     "settings" : {
         "number_of_shards" : 1
     },
     "mappings" : {
         "properties" : {
-			"borough": {"type": "string"},
-            "neighborhood": {"type": "keyword"},
-			"person_injured": {"type": "integer"},
-			"person_killed": {"type": "integer"},
-			"pedestrian_injured": {"type": "integer"},
-			"pedestrian_killed": {"type": "integer"},
-			"cyclist_injured": {"type": "integer"},
-			"cyclist_killed": {"type": "integer"},
-			"motorist_injured": {"type": "integer"},
-			"motorist_killed": {"type": "integer"}
+            "ny_neighborhood": {"type": "keyword"},
+			"ny_delta_number_of_accidents": {"type": "integer"},
+			"ny_crash_datetime_per_month": {"type": "date", "format": "yyyy-MM-dd"}
         }
     }
+}
+
+PUT _cluster/settings
+{
+  "transient": {
+    "search.max_buckets": 30000
+  }
 }

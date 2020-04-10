@@ -1,0 +1,31 @@
+[
+  {
+    "_id": "9fba3d40-78c3-11ea-bf15-d9c584aa3b63",
+    "_type": "visualization",
+    "_source": {
+      "title": "NY TOOLBAR for change in number of accidents",
+      "visState": "{\"title\":\"NY TOOLBAR for change in number of accidents\",\"type\":\"input_control_vis\",\"params\":{\"controls\":[{\"id\":\"1586259087454\",\"fieldName\":\"ny_delta_number_of_accidents\",\"parent\":\"\",\"label\":\"indicate accident rate\",\"type\":\"range\",\"options\":{\"decimalPlaces\":0,\"step\":1},\"indexPatternRefName\":\"control_0_index_pattern\"}],\"updateFiltersOnChange\":true,\"useTimeFilter\":true,\"pinFilters\":false},\"aggs\":[]}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[{\"meta\":{\"controlledBy\":\"1586259087454\",\"type\":\"range\",\"key\":\"ny_delta_number_of_accidents\",\"value\":\"-81 to 69\",\"params\":{\"gte\":-81,\"lte\":69},\"disabled\":false,\"negate\":false,\"alias\":null,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\"},\"range\":{\"ny_delta_number_of_accidents\":{\"gte\":-81,\"lte\":69}},\"$state\":{\"store\":\"appState\"}}]}"
+      }
+    },
+    "_migrationVersion": {
+      "visualization": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+        "type": "index-pattern",
+        "id": "85ee7fd0-78c2-11ea-bf15-d9c584aa3b63"
+      },
+      {
+        "name": "control_0_index_pattern",
+        "type": "index-pattern",
+        "id": "85ee7fd0-78c2-11ea-bf15-d9c584aa3b63"
+      }
+    ]
+  }
+]

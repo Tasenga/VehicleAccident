@@ -1,26 +1,14 @@
 from pathlib import Path
 from os.path import dirname, abspath
-from datetime import datetime
+import logging
 
 from geospark.register import GeoSparkRegistrator
 from pyspark.sql import SparkSession
 
-from work_with_document import write_csv, spark_read_csv
+from work_with_document import write_csv, spark_read_csv, insert_to_db
 
 
-def primary_processing(raw_data):
-    tmp_sdf = raw_data.select(
-        "crash_datetime",
-        "city",
-        "location",
-        "weather",
-        "total_injury",
-        "total_killed",
-    )
-    primary_processed_data = tmp_sdf.withColumnRenamed(
-        "total_injury", 'total_injured'
-    )
-    return primary_processed_data
+_LOGGER = logging.getLogger(__name__)
 
 
 def add_neighborhoods(spark, accidents, neighborhoods):
@@ -60,17 +48,16 @@ def add_neighborhoods(spark, accidents, neighborhoods):
 
 
 def prepare_data_about_chicago(spark):
-    print(f"{datetime.now()} - start primary processing")
+    _LOGGER.info("start primary processing")
     raw_data = spark_read_csv(
         spark,
         Path(
             dirname(abspath(__file__)), "data_source", "chicago_accidents.csv"
         ),
     )
-    primary_processed_data = primary_processing(raw_data)
-    print(f"{datetime.now()} - end primary processing")
+    _LOGGER.info("end primary processing")
 
-    print(f"{datetime.now()} - start adding neighborhoods")
+    _LOGGER.info("start adding neighborhoods")
     neighborhoods = spark_read_csv(
         spark,
         Path(
@@ -80,22 +67,24 @@ def prepare_data_about_chicago(spark):
         ),
     )
     data_with_neighborhoods = add_neighborhoods(
-        spark, primary_processed_data, neighborhoods
+        spark, raw_data, neighborhoods
     )
-    print(f"{datetime.now()} - end adding neighborhoods")
+    _LOGGER.info("end adding neighborhoods")
 
-    print(f"{datetime.now()} - start create csv")
+    _LOGGER.info("start create csv")
     write_csv(
         Path(cwd, "resulting_data", "Chicago.csv"),
         mode="w",
         values=[
-            "crash_datetime",
-            "city",
-            "neighborhood",
-            "location",
-            "weather",
-            "total_injured",
-            "total_killed",
+            [
+                "crash_datetime",
+                "city",
+                "neighborhood",
+                "location",
+                "weather",
+                "total_injured",
+                "total_killed",
+            ]
         ],
     )
     write_csv(
@@ -103,13 +92,34 @@ def prepare_data_about_chicago(spark):
         mode="a",
         values=data_with_neighborhoods.collect(),
     )
-    print(f"{datetime.now()} - end create csv")
+    _LOGGER.info("end create csv")
 
 
 if __name__ == '__main__':
-    print(f"{datetime.now()} - start program")
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+
+    _LOGGER.info("start program")
+
     cwd = dirname(abspath(__file__))
-    spark = SparkSession.builder.getOrCreate()
+    spark = (
+        SparkSession.builder.master("local")
+        .appName("insert data to db")
+        .config(
+            "spark.jars",
+            Path(dirname(abspath(__file__)), "postgresql-42.2.11.jar"),
+        )
+        .getOrCreate()
+    )
     GeoSparkRegistrator.registerAll(spark)
-    prepare_data_about_chicago(spark)
-    print(f"{datetime.now()} - end program")
+
+    # prepare_data_about_chicago(spark)
+    accidents = spark_read_csv(
+        spark,
+        Path(dirname(abspath(__file__)), "resulting_data", "Chicago.csv",),
+    )
+    insert_to_db("accidents", accidents)
+
+    _LOGGER.info("end program")
