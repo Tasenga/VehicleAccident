@@ -133,4 +133,41 @@ for i in permit_type:
             numpy.corrcoef(sample_df[(sample_df['PermitType'] == i) & (sample_df['Borough'] == j)]['reconstruction'],
                            sample_df[(sample_df['PermitType'] == i) & (sample_df['Borough'] == j)]['Accidents'])[0][1]
 
-sample_df.to_csv('Reconstruct_by borough.csv')
+
+sample_df.drop(['reconstruction','Accidents'], axis=1, inplace=True)
+sample_df = sample_df.groupby(['PermitType','Borough']).mean().reset_index()
+
+#create new df for city correlation
+city_df = df.groupby(['PermitTypeDesc']).resample('Y', on='IssuedWorkEndDate').count()
+city_df.index = city_df.index.set_names(['PermitType', 'EndDate'])
+city_df = city_df.reset_index()
+city_df.drop(['IssuedWorkEndDate'], axis=1, inplace=True)
+city_df['Accidents'] = 0
+city_df['Borough'] = 'CITY'
+
+city_df.loc[city_df['EndDate'] == '2013-12-31', ['Accidents']] = 171936
+city_df.loc[city_df['EndDate'] == '2014-12-31', ['Accidents']] = 172741
+city_df.loc[city_df['EndDate'] == '2015-12-31', ['Accidents']] = 190620
+city_df.loc[city_df['EndDate'] == '2016-12-31', ['Accidents']] = 227340
+city_df.loc[city_df['EndDate'] == '2017-12-31', ['Accidents']] = 282468
+city_df.loc[city_df['EndDate'] == '2018-12-31', ['Accidents']] = 308656
+city_df.loc[city_df['EndDate'] == '2019-12-31', ['Accidents']] = 284458
+
+city_df['Corr'] = 0
+permit_type = ['OCCUPANCY OF SIDEWALK AS STIPULATED', 'OCCUPANCY OF ROADWAY AS STIPULATED', 'CROSSING SIDEWALK',
+               'REPAIR SIDEWALK', 'TEMPORARY PEDESTRIAN WALK', 'REPLACE SIDEWALK', 'SIDEWALK RECONSTRUCTION CONTRACTS',
+               'SIDEWALK RECONSTRUCTION CONTRACTS-PROT', 'INSTALL TRAFFIC SIGNALS',
+               'CONSTRUCT NEW SIDEWALK BLG. PAVEMENT',
+               'REPAIR TRAFFIC STREET LIGHT', 'REPLACE/INSTALL STREET LIGHTS-PROTECTED',
+               'OPEN SIDEWALK TO INSTALL FOUNDATION',
+               'TRANSFORMER VAULT - IN SIDEWALK AREA', 'INSTALL STREET FURNITURE']
+for i in permit_type:
+    city_df.loc[city_df['PermitType'] == i, ['Corr']] = \
+        numpy.corrcoef(city_df[city_df['PermitType'] == i]['PermitTypeDesc'], \
+                       city_df[city_df['PermitType'] == i]['Accidents'])[0][1]
+
+city_df.drop(['PermitTypeDesc', 'Accidents', 'BoroughName'], axis=1, inplace=True)
+city_df = city_df.groupby(['PermitType', 'Borough']).mean().reset_index()
+
+final_df = pd.concat([city_df, sample_df])
+final_df.to_csv('Reconstruct_by borough.csv', index=False)
