@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "63c25be0-7983-11ea-8d3c-5be360e4322a",
+    "_type": "visualization",
+    "_source": {
+      "title": "classes_scatter",
+      "visState": "{\"title\":\"classes_scatter\",\"type\":\"vega\",\"params\":{\"spec\":\"{\\n\\n  $schema: \\\"https://vega.github.io/schema/vega-lite/v2.json\\\"\\n\\n  mark: point\\n\\n  data: {\\n\\n    url: {\\n      %context%: true\\n      index: population_classes\\n      body: {\\n        size: 10000,\\n        _source: [\\\"neighborhood\\\", \\\"population\\\", \\\"accidents\\\", \\\"cluster\\\"]\\n      }\\n    }\\n    format: { property: \\\"hits.hits\\\" }\\n  }\\n\\n selection: {\\n    pts: {\\n      type: single\\n      on: mouseover\\n    }\\n    brush: {\\n      type: interval\\n      encodings: [\\\"x\\\"]\\n    }\\n }\\n  encoding: {\\n    y: {\\n      field: _source.population\\n      type: quantitative\\n      axis: { title: \\\"Population\\\" }\\n      \\n    }\\n    x: {\\n      field: _source.accidents\\n      type: quantitative\\n      axis: { title: \\\"Accidents\\\" }\\n      scale: {type: \\\"log\\\" }\\n    }\\n    tooltip: {\\n      field: _source.neighborhood\\n      type: nominal\\n\\n    }\\n    color: {\\n    field: _source.cluster\\n    title: \\\"Cluster\\\"\\n    type: nominal\\n\\n    }\\n    size:{\\n      value: 75\\n    }\\n  }\\n}\"},\"aggs\":[]}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+      }
+    },
+    "_migrationVersion": {
+      "visualization": "7.0.0"
+    },
+    "_references": []
+  }
+]
